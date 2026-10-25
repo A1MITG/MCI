@@ -1,0 +1,17 @@
+{
+  "note": "Tier by domain (master prompt v2 section 8, India hierarchy, plus US regulators). Unknown domains are capped at tier 4 unless Scope lists them as an official domain of a studied company (tier 2). Edit this file, not code.",
+  "unknownDomainTier": 4,
+  "officialCompanyDomainTier": 2,
+  "domains": {
+    "mca.gov.in": 1, "bseindia.com": 1, "nseindia.com": 1, "sebi.gov.in": 1, "rbi.org.in": 1,
+    "irdai.gov.in": 1, "trai.gov.in": 1, "egazette.gov.in": 1, "egazette.nic.in": 1,
+    "sci.gov.in": 1, "nclt.gov.in": 1, "sec.gov": 1, "data.sec.gov": 1,
+    "mospi.gov.in": 2, "commerce.gov.in": 2, "meity.gov.in": 2, "vahan.parivahan.gov.in": 2,
+    "gstcouncil.gov.in": 2, "pib.gov.in": 2,
+    "siam.in": 3, "fada.in": 3, "icea.org.in": 3, "nasscom.in": 3, "idc.com": 3,
+    "counterpointresearch.com": 3, "omdia.tech.informa.com": 3, "canalys.com": 3, "cmrindia.com": 3,
+    "reuters.com": 4, "ptinews.com": 4, "thehindu.com": 4, "business-standard.com": 4,
+    "economictimes.indiatimes.com": 4, "livemint.com": 4, "autocarpro.in": 4, "moneycontrol.com": 4
+  },
+  "signalDomains": ["x.com", "twitter.com", "reddit.com", "linkedin.com", "glassdoor.com", "play.google.com", "apps.apple.com", "youtube.com"]
+}

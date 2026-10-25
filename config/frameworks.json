@@ -1,0 +1,13 @@
+{
+  "note": "Question-driven framework selection, master prompt v2 section 5. Analyse may only use frameworks listed for the study's research questions; anything else must be excluded with a reason.",
+  "questions": {
+    "market_attractive": { "label": "Is the market attractive?", "tools": ["Five Forces", "PESTLE", "Market sizing", "Industry lifecycle"] },
+    "why_winning": { "label": "Why does one competitor win?", "tools": ["Value chain", "VRIO", "7 Powers", "Strategy Canvas"] },
+    "where_money": { "label": "Where does the money go?", "tools": ["Profit pools", "Financial ratios", "Unit economics"] },
+    "where_grow": { "label": "Where should the company grow?", "tools": ["Ansoff", "Three Horizons", "Growth decomposition"] },
+    "competitor_next": { "label": "What will the competitor do next?", "tools": ["Four Corners", "Signal radar", "Scenario planning", "War gaming"] },
+    "switching": { "label": "Which customers are vulnerable to switching?", "tools": ["Jobs to be done", "Customer journey", "Win/loss"] },
+    "best_response": { "label": "What is the best strategic response?", "tools": ["TOWS", "Value at stake", "Scenario analysis"] }
+  },
+  "alwaysAvailable": ["Market share trend analysis", "Competitor matrix", "SWOT", "Battlecard"]
+}
