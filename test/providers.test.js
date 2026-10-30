@@ -86,6 +86,8 @@ test('OpenAI adapter: failures become typed errors, never mock data', async () =
   const code = async (fetchImpl, key = 'k') => openaiLLM({ key, models, fetchImpl }).json({ stage: 'scope', system: 's', user: 'u' }).catch((e) => e.code);
   assert.equal(await code(reply('{}'), ''), 'config_error');
   assert.equal(await code(status(429)), 'rate_limited');
+  const noQuota = async () => ({ ok: false, status: 429, text: async () => '{"error":{"code":"insufficient_quota"}}' });
+  assert.equal(await code(noQuota), 'config_error', 'no credits stops at once instead of retrying');
   assert.equal(await code(status(401)), 'config_error');
   assert.equal(await code(status(500)), 'provider_error');
   assert.equal(await code(reply('not json')), 'invalid_json');

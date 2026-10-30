@@ -61,7 +61,8 @@ export function openaiLLM({ key, models, fetchImpl = fetch, timeoutMs = 300_000 
 
 function statusError(status, text, stage) {
   const detail = text.slice(0, 300);
-  if (status === 429) return runError('rate_limited', 'OpenAI rate limit or quota reached', { stage });
+  if (status === 429 && /insufficient_quota/.test(text)) return runError('config_error', 'OpenAI account has no quota left. Add credits at platform.openai.com/settings/organization/billing', { stage });
+  if (status === 429) return runError('rate_limited', 'OpenAI rate limit reached', { stage });
   if (status === 401 || status === 403) return runError('config_error', 'Invalid OPENAI_API_KEY or no access to the model', { stage });
   if (status === 400 || status === 404) return runError('config_error', `OpenAI rejected the request (${status}): ${detail}`, { stage });
   return runError('provider_error', `OpenAI API error ${status}`, { stage });
