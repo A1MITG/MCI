@@ -1,0 +1,97 @@
+{
+  "methodologyVersion": "master-prompt-v2.1",
+  "stages": [
+    "lookup",
+    "scope",
+    "collect",
+    "validate",
+    "analyse",
+    "challenge",
+    "publish"
+  ],
+  "loops": {
+    "maxLoopBacksPerStage": 2,
+    "maxToolCallsPerStage": 25,
+    "maxStageRunsPerStudy": 20
+  },
+  "retry": {
+    "maxAttempts": 3,
+    "baseDelayMs": 1000,
+    "maxDelayMs": 15000
+  },
+  "budgets": {
+    "maxSearchesPerStudy": 40,
+    "maxPagesFetchedPerStudy": 60,
+    "maxModelTokensPerStudy": 1500000,
+    "maxUsdPerStudy": null
+  },
+  "depthSourceTargets": {
+    "Student": [
+      10,
+      15
+    ],
+    "Standard": [
+      25,
+      35
+    ],
+    "Deep Dive": [
+      50,
+      null
+    ],
+    "Board Grade": [
+      80,
+      null
+    ]
+  },
+  "gate": {
+    "critical": [
+      1,
+      2,
+      4,
+      5,
+      11,
+      12
+    ]
+  },
+  "materialThreshold": 3,
+  "contradictionTolerance": 0.02,
+  "retention": {
+    "unsavedDays": 30
+  },
+  "library": {
+    "recheckMaterialClaimsOnly": true
+  },
+  "models": {
+    "strong": "claude-opus-5-5",
+    "fast": "claude-haiku-5-5",
+    "stageTier": {
+      "scope": "strong",
+      "collect": "fast",
+      "validate": "fast",
+      "analyse": "strong",
+      "challenge": "strong",
+      "publish": "strong"
+    },
+    "stageEffort": {
+      "scope": "medium",
+      "collect": "low",
+      "validate": "medium",
+      "analyse": "high",
+      "challenge": "high",
+      "publish": "medium"
+    }
+  },
+  "prompts": {
+    "scope": "v1",
+    "collect": "v1",
+    "validate": "v1",
+    "analyse": "v1",
+    "challenge": "v1",
+    "publish": "v1"
+  },
+  "context": {
+    "maxCharsPerSource": 6000,
+    "maxSourcesPerValidate": 40,
+    "resultsFetchedPerQuery": 3
+  }
+}

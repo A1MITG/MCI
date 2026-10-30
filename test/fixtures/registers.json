@@ -1,0 +1,2069 @@
+{
+ "note": "Exported from the hand-built claim registers in /mnt/project-files/mci (golden case Tata PV vs Mahindra, Samsung India mobile). Regression fixture for the scoring rubric.",
+ "golden": [
+  {
+   "claim_id": "C01",
+   "status": "Reported",
+   "source_ids": [
+    "S01"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 74,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C02",
+   "status": "Reported",
+   "source_ids": [
+    "S02",
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 76,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C03",
+   "status": "Reported",
+   "source_ids": [
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 13,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 72,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C04",
+   "status": "Calculated",
+   "source_ids": [
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 72,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C05",
+   "status": "Calculated",
+   "source_ids": [
+    "S01",
+    "S02",
+    "S11"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C06",
+   "status": "Reported",
+   "source_ids": [
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C07",
+   "status": "Calculated",
+   "source_ids": [
+    "S02",
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 16,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 80,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C08",
+   "status": "Reported",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C09",
+   "status": "Calculated",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 0,
+    "recency": 15,
+    "consistency": 0
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-15 unresolved contradiction",
+   "confidence": 38,
+   "label": "Weakly supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C10",
+   "status": "Reported",
+   "source_ids": [
+    "S05"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 74,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C11",
+   "status": "Reported",
+   "source_ids": [
+    "S08",
+    "S09"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 12
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 67,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C12",
+   "status": "Reported",
+   "source_ids": [
+    "S08"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C13",
+   "status": "Reported",
+   "source_ids": [
+    "S08"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 74,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C14",
+   "status": "Reported",
+   "source_ids": [
+    "S08",
+    "S09"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 68,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C15",
+   "status": "Verified",
+   "source_ids": [
+    "S06",
+    "S07"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 88,
+   "label": "Strongly supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C16",
+   "status": "Inferred",
+   "source_ids": [
+    "S06",
+    "S07",
+    "S08",
+    "S09"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 20,
+    "directness": 12,
+    "corroboration": 12,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 69,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C17",
+   "status": "Verified",
+   "source_ids": [
+    "S06",
+    "S07"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 83,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C18",
+   "status": "Verified",
+   "source_ids": [
+    "S06",
+    "S07"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 86,
+   "label": "Strongly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C19",
+   "status": "Verified",
+   "source_ids": [
+    "S06",
+    "S07"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 83,
+   "label": "Well supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C20",
+   "status": "Reported",
+   "source_ids": [
+    "S11",
+    "S12"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 20,
+    "corroboration": 14,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C21",
+   "status": "Reported",
+   "source_ids": [
+    "S11"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 12,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 65,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C22",
+   "status": "Calculated",
+   "source_ids": [
+    "S11",
+    "S12"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 18,
+    "corroboration": 16,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 74,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C23",
+   "status": "Reported",
+   "source_ids": [
+    "S13"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 10,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 66,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C24",
+   "status": "Reported",
+   "source_ids": [
+    "S08",
+    "S11"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 12
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 65,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C25",
+   "status": "Verified",
+   "source_ids": [
+    "S06",
+    "S07",
+    "S11"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 83,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C26",
+   "status": "Reported",
+   "source_ids": [
+    "S09",
+    "S10"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 20,
+    "corroboration": 14,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 71,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C27",
+   "status": "Calculated",
+   "source_ids": [
+    "S07",
+    "S09"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 15,
+    "directness": 15,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 60,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C28",
+   "status": "Calculated",
+   "source_ids": [
+    "S03",
+    "S06",
+    "S08"
+   ],
+   "best_tier": 1,
+   "components": {
+    "authority": 18,
+    "directness": 15,
+    "corroboration": 12,
+    "recency": 15,
+    "consistency": 12
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 67,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C29",
+   "status": "Reported",
+   "source_ids": [
+    "S09",
+    "S10"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 16,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 79,
+   "label": "Well supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C30",
+   "status": "Reported",
+   "source_ids": [
+    "S09",
+    "S10"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 20,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 5
+   },
+   "penalty_total": -20,
+   "penalty_reasons": "-15 unresolved contradiction; -5 intermediary",
+   "confidence": 42,
+   "label": "Weakly supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C31",
+   "status": "Reported",
+   "source_ids": [
+    "S09"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 12,
+    "directness": 20,
+    "corroboration": 4,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": 51,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C32",
+   "status": "Reported",
+   "source_ids": [
+    "S14"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 10,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 69,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C33",
+   "status": "Reported",
+   "source_ids": [
+    "S15",
+    "S16"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 14,
+    "recency": 10,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 72,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C34",
+   "status": "Reported",
+   "source_ids": [
+    "S16"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 10,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 66,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C35",
+   "status": "Reported",
+   "source_ids": [
+    "S17"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": 58,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C36",
+   "status": "Reported",
+   "source_ids": [
+    "S18"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": 63,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C37",
+   "status": "Hypothesis",
+   "source_ids": [
+    "S19"
+   ],
+   "best_tier": 5,
+   "components": {
+    "authority": 8,
+    "directness": 10,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 5
+   },
+   "penalty_total": -10,
+   "penalty_reasons": "-10 single origin",
+   "confidence": 36,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "I01",
+   "status": "Inferred",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 70,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I02",
+   "status": "Inferred",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 62,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I03",
+   "status": "Inferred",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 55,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I04",
+   "status": "Hypothesis",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 40,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "I05",
+   "status": "Hypothesis",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 45,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "I06",
+   "status": "Inferred",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 55,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "V01",
+   "status": "Estimated",
+   "source_ids": [],
+   "best_tier": null,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": 55,
+   "label": "Partially supported",
+   "materiality": 5
+  }
+ ],
+ "samsung": [
+  {
+   "claim_id": "C01",
+   "status": "Reported",
+   "source_ids": [
+    "S01",
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C02",
+   "status": "Reported",
+   "source_ids": [
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C03",
+   "status": "Inferred",
+   "source_ids": [
+    "S01",
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 15,
+    "corroboration": 18,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C04",
+   "status": "Reported",
+   "source_ids": [
+    "S01",
+    "S02",
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 18,
+    "recency": 15,
+    "consistency": 16
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C05",
+   "status": "Calculated",
+   "source_ids": [
+    "S01"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 16
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C06",
+   "status": "Reported",
+   "source_ids": [
+    "S01",
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 5,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C07",
+   "status": "Reported",
+   "source_ids": [
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 4,
+    "recency": 15,
+    "consistency": 12
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C08",
+   "status": "Calculated",
+   "source_ids": [
+    "S03",
+    "S07"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 15,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 8
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C09",
+   "status": "Reported",
+   "source_ids": [
+    "S01",
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 16,
+    "corroboration": 5,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C10",
+   "status": "Reported",
+   "source_ids": [
+    "S03"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C11",
+   "status": "Reported",
+   "source_ids": [
+    "S04",
+    "S26"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 10,
+    "recency": 14,
+    "consistency": 16
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C12",
+   "status": "Reported",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 10,
+    "recency": 14,
+    "consistency": 16
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C13",
+   "status": "Reported",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 16
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C14",
+   "status": "Reported",
+   "source_ids": [
+    "S04",
+    "S05"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 15,
+    "recency": 14,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C15",
+   "status": "Reported",
+   "source_ids": [
+    "S05"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 12,
+    "recency": 14,
+    "consistency": 12
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C16",
+   "status": "Reported",
+   "source_ids": [
+    "S06"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 20,
+    "corroboration": 10,
+    "recency": 12,
+    "consistency": 15
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C17",
+   "status": "Reported",
+   "source_ids": [
+    "S08"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 12,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C18",
+   "status": "Reported",
+   "source_ids": [
+    "S04",
+    "S08"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 15,
+    "recency": 12,
+    "consistency": 12
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C19",
+   "status": "Reported",
+   "source_ids": [
+    "S07"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 20,
+    "corroboration": 12,
+    "recency": 14,
+    "consistency": 5
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-15 page contradicts itself",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C20",
+   "status": "Reported",
+   "source_ids": [
+    "S09"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 15,
+    "directness": 16,
+    "corroboration": 10,
+    "recency": 12,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C21",
+   "status": "Reported",
+   "source_ids": [
+    "S03",
+    "S04",
+    "S07"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 15,
+    "recency": 14,
+    "consistency": 15
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C22",
+   "status": "Reported",
+   "source_ids": [
+    "S10"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 12,
+    "directness": 16,
+    "corroboration": 10,
+    "recency": 10,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C23",
+   "status": "Inferred",
+   "source_ids": [
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 12,
+    "corroboration": 4,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C24",
+   "status": "Reported",
+   "source_ids": [
+    "S11",
+    "S12"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 20,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 18
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin (one filing); -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C25",
+   "status": "Reported",
+   "source_ids": [
+    "S11"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 20,
+    "directness": 18,
+    "corroboration": 2,
+    "recency": 15,
+    "consistency": 16
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C26",
+   "status": "Calculated",
+   "source_ids": [
+    "S11",
+    "S12",
+    "S17"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 10,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C27",
+   "status": "Calculated",
+   "source_ids": [
+    "S11"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 6,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C28",
+   "status": "Calculated",
+   "source_ids": [
+    "S11",
+    "S17"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 12,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C29",
+   "status": "Reported",
+   "source_ids": [
+    "S11"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 20,
+    "directness": 18,
+    "corroboration": 2,
+    "recency": 15,
+    "consistency": 16
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C30",
+   "status": "Not established",
+   "source_ids": [
+    "S11"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": null,
+    "directness": null,
+    "corroboration": null,
+    "recency": null,
+    "consistency": null
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "n/a",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C31",
+   "status": "Calculated",
+   "source_ids": [
+    "S11",
+    "S12"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 12,
+    "recency": 12,
+    "consistency": 18
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C32",
+   "status": "Reported",
+   "source_ids": [
+    "S16"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 14,
+    "directness": 14,
+    "corroboration": 2,
+    "recency": 12,
+    "consistency": 12
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; company claim; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "C33",
+   "status": "Reported",
+   "source_ids": [
+    "S09"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 14,
+    "directness": 14,
+    "corroboration": 2,
+    "recency": 13,
+    "consistency": 8
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; company claim; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C34",
+   "status": "Reported",
+   "source_ids": [
+    "S14",
+    "S09"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 12,
+    "directness": 16,
+    "corroboration": 10,
+    "recency": 14,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C35",
+   "status": "Reported",
+   "source_ids": [
+    "S15"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 14,
+    "directness": 18,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 16
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C36",
+   "status": "Reported",
+   "source_ids": [
+    "S16"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 14,
+    "directness": 14,
+    "corroboration": 2,
+    "recency": 12,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; company claim; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C37",
+   "status": "Reported",
+   "source_ids": [
+    "S17"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 12,
+    "directness": 12,
+    "corroboration": 4,
+    "recency": 12,
+    "consistency": 12
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C38",
+   "status": "Reported",
+   "source_ids": [
+    "S18",
+    "S29"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 15,
+    "directness": 16,
+    "corroboration": 8,
+    "recency": 8,
+    "consistency": 15
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C39",
+   "status": "Reported",
+   "source_ids": [
+    "S28"
+   ],
+   "best_tier": 5,
+   "components": {
+    "authority": 6,
+    "directness": 10,
+    "corroboration": 0,
+    "recency": 10,
+    "consistency": 10
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 1
+  },
+  {
+   "claim_id": "C40",
+   "status": "Reported",
+   "source_ids": [
+    "S13",
+    "S12"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 20,
+    "directness": 18,
+    "corroboration": 8,
+    "recency": 15,
+    "consistency": 12
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C41",
+   "status": "Calculated",
+   "source_ids": [
+    "S11",
+    "S13"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 14,
+    "corroboration": 6,
+    "recency": 15,
+    "consistency": 6
+   },
+   "penalty_total": -10,
+   "penalty_reasons": "-10 comparability gap",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C42",
+   "status": "Verified",
+   "source_ids": [
+    "S23"
+   ],
+   "best_tier": 2,
+   "components": {
+    "authority": 25,
+    "directness": 20,
+    "corroboration": 4,
+    "recency": 12,
+    "consistency": 18
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Well supported",
+   "materiality": 2
+  },
+  {
+   "claim_id": "C43",
+   "status": "Calculated",
+   "source_ids": [
+    "S24"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 16,
+    "corroboration": 4,
+    "recency": 13,
+    "consistency": 12
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C44",
+   "status": "Reported",
+   "source_ids": [
+    "S19"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 16,
+    "corroboration": 6,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C45",
+   "status": "Reported",
+   "source_ids": [
+    "S20"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 15,
+    "directness": 16,
+    "corroboration": 4,
+    "recency": 5,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C46",
+   "status": "Reported",
+   "source_ids": [
+    "S21"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 18,
+    "directness": 18,
+    "corroboration": 4,
+    "recency": 3,
+    "consistency": 14
+   },
+   "penalty_total": -10,
+   "penalty_reasons": "-10 single origin",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C47",
+   "status": "Reported",
+   "source_ids": [
+    "S22"
+   ],
+   "best_tier": 4,
+   "components": {
+    "authority": 15,
+    "directness": 18,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 14
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C48",
+   "status": "Reported",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 14,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 10
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "C49",
+   "status": "Reported",
+   "source_ids": [
+    "S01",
+    "S02"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 14,
+    "corroboration": 0,
+    "recency": 14,
+    "consistency": 10
+   },
+   "penalty_total": -15,
+   "penalty_reasons": "-10 single origin; -5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "C50",
+   "status": "Reported",
+   "source_ids": [
+    "S27"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 18,
+    "directness": 10,
+    "corroboration": 4,
+    "recency": 12,
+    "consistency": 10
+   },
+   "penalty_total": -10,
+   "penalty_reasons": "-10 single origin",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 3
+  },
+  {
+   "claim_id": "I01",
+   "status": "Inferred",
+   "source_ids": [
+    "S01",
+    "S03",
+    "S07"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 8,
+    "corroboration": 12,
+    "recency": 15,
+    "consistency": 10
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I02",
+   "status": "Inferred",
+   "source_ids": [
+    "S03",
+    "S04",
+    "S05"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 10,
+    "corroboration": 15,
+    "recency": 15,
+    "consistency": 14
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I03",
+   "status": "Inferred",
+   "source_ids": [
+    "S04",
+    "S16"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 10,
+    "directness": 8,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 10
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 5
+  },
+  {
+   "claim_id": "I04",
+   "status": "Inferred",
+   "source_ids": [
+    "S04",
+    "S13",
+    "S23"
+   ],
+   "best_tier": 2,
+   "components": {
+    "authority": 15,
+    "directness": 8,
+    "corroboration": 12,
+    "recency": 14,
+    "consistency": 10
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Partially supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "I05",
+   "status": "Hypothesis",
+   "source_ids": [
+    "S02",
+    "S19"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 10,
+    "directness": 4,
+    "corroboration": 2,
+    "recency": 12,
+    "consistency": 8
+   },
+   "penalty_total": 0,
+   "penalty_reasons": null,
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "I06",
+   "status": "Calculated",
+   "source_ids": [
+    "S04",
+    "S22"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 15,
+    "directness": 12,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 8
+   },
+   "penalty_total": -5,
+   "penalty_reasons": "-5 intermediary",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 4
+  },
+  {
+   "claim_id": "V01",
+   "status": "Estimated",
+   "source_ids": [
+    "S04"
+   ],
+   "best_tier": 3,
+   "components": {
+    "authority": 12,
+    "directness": 8,
+    "corroboration": 4,
+    "recency": 14,
+    "consistency": 6
+   },
+   "penalty_total": -10,
+   "penalty_reasons": "-10 assumes Samsung ASP = market ASP",
+   "confidence": null,
+   "label": "Weakly supported",
+   "materiality": 5
+  }
+ ]
+}

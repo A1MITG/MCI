@@ -1,43 +1,47 @@
-# MCI Platform — Prototype
+# Vantage Point
 
-This repository contains a minimal prototype of the Market & Competitive Intelligence (MCI) Platform described in the sitemap.
+A competitive intelligence research engine from The Continuum Lab. Each study answers one research question. Every claim in it is checked against its source by code, scored on a fixed rubric and audited by an independent pass. The result is one interactive HTML report.
 
-It includes:
-- An Express backend (`server.js`) with endpoints to analyze a company and run a 5-company insurance sample.
-- A simple AI client (`aiClient.js`) which runs in mock mode by default (no API keys required).
-- A static frontend (`public/index.html`) with a search bar and demo tiles to run samples and view stored results.
-- Sample output stored at `data/insurance_samples.json` (mocked results for five insurance companies).
+## Quick start
 
-Quick start (Windows PowerShell):
-
-1. Install dependencies
-
-```powershell
-cd C:/Projects/AI_Factory/MCI
+```bash
 npm install
+npm test          # offline, no keys
+npm run eval      # synthetic Tata vs Mahindra study + planted-error pass rate
+cp .env.example .env   # add ANTHROPIC_API_KEY and your search key
+npm start         # http://localhost:3000
 ```
 
-2. Run the server (mock mode by default)
+## Switching the search provider
 
-```powershell
-npm start
+Set one line in `.env`:
+
+```
+SEARCH_PROVIDER=tavily   # or brave, exa, fixture
 ```
 
-3. Open http://localhost:3000 in your browser.
+Then set that provider's key in `.env`. Nothing else changes.
 
-Switching to real AI providers
+## How a study runs
 
-- The `aiClient.js` file is the integration point. It currently returns mocked results when `MOCK=true` or when no `OPENAI_API_KEY`/`GROK_API_KEY` is present.
-- To implement real calls, add code into `aiClient.generateAnalysis` to call the OpenAI or Grok APIs. Keep the same output shape to avoid breaking the frontend.
+```
+library check ─▶ scope ─▶ (you confirm) ─▶ collect ─▶ validate ─▶ analyse ─▶ challenge ─▶ publish
+      │                                       ▲          │                     │
+      └─▶ re-check prior study                └─ loop ───┘                     └─ loop for counter-evidence
+             ├─ nothing material changed ─▶ reuse it, re-stamped
+             └─ material change ─▶ full redo, starting from the prior sources
+```
 
-Environment variables
+The quality gate ends each run:
 
-- `MOCK=true` forces mock mode even if API keys are present.
-- `OPENAI_API_KEY` and/or `GROK_API_KEY` can be used later for real integrations.
+- A Fail on checks 1, 2, 4, 5, 11 or 12 blocks publication.
+- Partial results are published, and disclosed on page one.
 
-Next steps (recommended)
+Studies can be saved, locked (read-only), unlocked, deleted and rolled back to any earlier version.
 
-- Wire up a real OpenAI / Grok integration and map the responses into the structured shape used by `aiClient`.
-- Expand the frontend with the full pages in the sitemap (Platform tour, Products, Solutions by Role & Industry, Resources, Company pages, Pricing, etc.).
-- Add authentication, storage in a DB (Postgres/Firestore), and background workers for long-running analysis jobs.
+## Documents
 
+- `docs/harness/decisions.md` records the approved decisions and the phase plan.
+- `docs/harness/scoring-rubric.md` explains the rubric in plain language.
+- `CLAUDE.md` gives the rules for changing the code.
+- `ROLLBACK.md` lists the rollback points.

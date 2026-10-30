@@ -1,0 +1,124 @@
+{
+  "version": "2.1.0",
+  "basis": "Master prompt v2 section 6, with the v2.1 decisions approved by Amit on 2026-10-25. Component maxima, penalties and label bands are v2 verbatim; anchor bands are new in v2.1 and were calibrated against the golden-case and Samsung claim registers.",
+  "statuses": ["Verified", "Reported", "Calculated", "Estimated", "Inferred", "Hypothesis", "Not established"],
+  "statusRules": {
+    "Verified": "Source tier 1 or 2 AND the supporting passage is found in the saved copy of the source (or the figure is a structured value taken directly from an official filing API).",
+    "Reported": "Source tier 3 or 4, or a tier 1-2 source whose passage could not be matched.",
+    "Calculated": "Derived by code from sourced claims with the formula shown.",
+    "Estimated": "Approximate value from a disclosed method and explicit assumptions.",
+    "Inferred": "Interpretation of cited claims, reasoning shown.",
+    "Hypothesis": "A proposition that needs testing.",
+    "Not established": "Evidence not found or not accessible. Confidence is null."
+  },
+  "components": {
+    "authority": {
+      "max": 25,
+      "question": "How authoritative is the best source for this claim?",
+      "bandsByTier": {
+        "1": [23, 25],
+        "2": [20, 22],
+        "3": [15, 18],
+        "4": [10, 14],
+        "5": [0, 8]
+      },
+      "anchors": [
+        [25, "Regulator, exchange or statutory filing that states the figure (MCA21, BSE/NSE, SEC, SEBI, RBI, IRDAI, Gazette)"],
+        [21, "Official statistics or the company's own release or price page"],
+        [18, "Industry body or research firm with a stated method (SIAM, FADA, IDC, Counterpoint)"],
+        [15, "Industry body or research firm, method not stated"],
+        [12, "Reputable journalism (Reuters, PTI, Business Standard, ET, Mint)"],
+        [6, "Signals: reviews, social media, job posts, forums"]
+      ]
+    },
+    "directness": {
+      "max": 20,
+      "question": "Does the source state the claim as worded?",
+      "anchors": [
+        [20, "States the exact figure or fact, same unit and period"],
+        [17, "States it, with a unit, period or wording mapping"],
+        [13, "One clear step of inference from what it states"],
+        [8, "Indirect: the claim is implied, not stated"],
+        [3, "Tangential: related evidence only"]
+      ]
+    },
+    "corroboration": {
+      "max": 20,
+      "question": "How many independent origins agree? Syndicated copies count once.",
+      "anchors": [
+        [19, "Three or more independent origins agree, including tier 1-2"],
+        [16, "Three or more independent origins agree"],
+        [12, "Two independent origins agree"],
+        [8, "One origin, reported by several outlets"],
+        [4, "One origin, one outlet"],
+        [0, "No corroboration possible or attempted"]
+      ]
+    },
+    "recency": {
+      "max": 15,
+      "question": "Is the data period the latest available for what the claim is about?",
+      "anchors": [
+        [15, "Latest available period"],
+        [12, "One reporting period behind the latest"],
+        [9, "Two periods behind"],
+        [5, "Older, but the claim is structural and unlikely to have changed"],
+        [2, "Stale for this claim"]
+      ]
+    },
+    "consistency": {
+      "max": 20,
+      "question": "Are definitions, units, denominators and periods clean and consistent?",
+      "anchors": [
+        [19, "Clean: definitions match the claim and other sources"],
+        [15, "Minor mapping (fiscal vs calendar, rounding), disclosed"],
+        [11, "A definitional caveat that limits comparability, disclosed"],
+        [6, "A known mismatch (e.g. wholesale vs retail, EBITDA vs PBIT)"],
+        [2, "Internal error or contradiction in the source itself"]
+      ]
+    }
+  },
+  "penalties": {
+    "unresolved_contradiction": { "points": -15, "rule": "Unresolved material contradiction between credible sources", "auto": "Two claims with the same metric (entity, measure, period) disagree beyond tolerance" },
+    "single_origin": { "points": -10, "rule": "All reports trace to a single origin", "auto": "Every cited source shares one origin, and there is more than one cited source or the only source repeats another" },
+    "weak_estimation_method": { "points": -10, "rule": "Weak or undisclosed estimation method", "auto": null },
+    "missing_input": { "points": -10, "rule": "Significant missing input", "auto": null },
+    "intermediary": { "points": -5, "rule": "Figure retrieved through an intermediary rather than the original document", "auto": "verification_state is 'intermediary'" }
+  },
+  "clamp": [0, 100],
+  "labels": [
+    [85, "Strongly supported"],
+    [70, "Well supported"],
+    [50, "Partially supported"],
+    [0, "Weakly supported"]
+  ],
+  "inferenceCeiling": {
+    "appliesTo": ["Inferred", "Estimated", "Hypothesis"],
+    "rule": "Never above the weakest material input claim plus 10",
+    "plus": 10
+  },
+  "materiality": {
+    "anchors": [
+      [1, "Peripheral"],
+      [2, "Limited"],
+      [3, "Meaningful"],
+      [4, "High"],
+      [5, "Critical to a major decision"]
+    ],
+    "materialThreshold": 3
+  },
+  "recommendation": {
+    "rule": "Scored on the evidence for its consequences, not on the reliability of its starting facts (v2 6D). Components new in v2.1.",
+    "components": {
+      "demand": { "max": 25, "question": "Is there evidence customers want the outcome (demand, switching, willingness to pay)?" },
+      "economics": { "max": 25, "question": "Is there evidence the margins and costs work?" },
+      "competitor_response": { "max": 20, "question": "Is the likely competitor response evidenced, and survivable?" },
+      "feasibility": { "max": 15, "question": "Can the owner execute it with known resources and timing?" },
+      "reversibility": { "max": 15, "question": "Low regret: can it be stopped or reversed cheaply if wrong?" }
+    },
+    "penalties": {
+      "untested_critical_assumption": { "points": -10, "rule": "Each critical assumption not yet tested (max two applied)" }
+    },
+    "startingFactsRule": "Starting-fact confidence is shown beside the score, never added to it."
+  },
+  "weakestLink": "A section's assessment shows its weakest decision-critical claim; scores are never averaged."
+}

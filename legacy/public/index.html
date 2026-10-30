@@ -1,0 +1,97 @@
+npm cache clean --force<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MCI Platform - Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    header { display:flex; align-items:center; gap:20px }
+    input[type=text] { width:400px; padding:8px }
+    button { padding:8px 12px; margin-left:6px }
+    .tile { border:1px solid #ddd; padding:12px; margin:8px 0 }
+    pre { background:#f7f7f7; padding:12px; overflow:auto }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Premium MCI Platform — Demo</h1>
+      <p>Enter any company to generate intelligence (mock mode if no API keys).</p>
+    </div>
+  </header>
+
+  <section>
+    <input id="companyInput" type="text" placeholder="Enter company name (e.g., Allianz)" />
+    <select id="regionSelect">
+      <option value="global">Global</option>
+      <option value="europe">Europe</option>
+      <option value="north-america">North America</option>
+      <option value="apac">APAC</option>
+    </select>
+    <button id="analyzeBtn">Analyze</button>
+    <button id="sampleBtn">Run 5-Company Insurance Sample</button>
+    <button id="viewSamplesBtn">View Stored Samples</button>
+  </section>
+
+  <section id="results" style="margin-top:18px"></section>
+
+  <script>
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const viewBtn = document.getElementById('viewSamplesBtn');
+    const companyInput = document.getElementById('companyInput');
+    const regionSelect = document.getElementById('regionSelect');
+    const results = document.getElementById('results');
+
+    analyzeBtn.onclick = async () => {
+      const company = companyInput.value.trim();
+      if (!company) { alert('Enter a company name'); return; }
+      results.innerHTML = '<div class="tile">Running analysis…</div>';
+      try {
+        const resp = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ company, region: regionSelect.value }) });
+        const j = await resp.json();
+        if (!j.ok) throw new Error(j.error || 'No result');
+        results.innerHTML = renderAnalysis(j.data);
+      } catch (e) {
+        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+      }
+    };
+
+    sampleBtn.onclick = async () => {
+      results.innerHTML = '<div class="tile">Running sample for 5 insurance companies…</div>';
+      try {
+        const resp = await fetch('/api/run-sample', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+        const j = await resp.json();
+        if (!j.ok) throw new Error(j.error || 'No result');
+        results.innerHTML = '<div class="tile">Sample run completed and stored at <code>/data/insurance_samples.json</code></div>' + j.samples.map(s=>`<div class="tile"><h3>${s.company}</h3><pre>${escapeHtml(JSON.stringify(s.analysis, null, 2))}</pre></div>`).join('');
+      } catch (e) {
+        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+      }
+    };
+
+    viewBtn.onclick = async () => {
+      results.innerHTML = '<div class="tile">Fetching stored samples…</div>';
+      try {
+        const resp = await fetch('/api/samples');
+        const j = await resp.json();
+        if (!j.ok) throw new Error(j.error || 'No result');
+        results.innerHTML = '<div class="tile">Stored samples:</div>' + j.data.samples.map(s=>`<div class="tile"><h3>${s.company}</h3><pre>${escapeHtml(JSON.stringify(s.analysis, null, 2))}</pre></div>`).join('');
+      } catch (e) {
+        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+      }
+    };
+
+    function renderAnalysis(a) {
+      return `<div class="tile"><h2>Executive Summary — ${a.company}</h2><p>${escapeHtml(a.executiveSummary)}</p>
+      <h3>Top Competitors</h3><pre>${escapeHtml(JSON.stringify(a.competitorDiscovery, null, 2))}</pre>
+      <h3>Market Sizing</h3><pre>${escapeHtml(JSON.stringify(a.marketSizing, null, 2))}</pre>
+      <h3>Company X-Ray</h3><pre>${escapeHtml(JSON.stringify(a.companyXRay, null, 2))}</pre>
+      <h3>Alerts</h3><pre>${escapeHtml(JSON.stringify(a.alerts, null, 2))}</pre>
+      </div>`;
+    }
+
+    function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  </script>
+</body>
+</html>
