@@ -11,6 +11,10 @@ function readJson(rel) {
 
 export function loadConfig(env = process.env) {
   const harness = readJson('config/harness.config.json');
+  harness.models.openai = {
+    strong: env.OPENAI_MODEL_STRONG || harness.models.openai.strong,
+    fast: env.OPENAI_MODEL_FAST || harness.models.openai.fast,
+  };
   return {
     root: ROOT,
     harness,
@@ -23,6 +27,7 @@ export function loadConfig(env = process.env) {
     },
     keys: {
       anthropic: env.ANTHROPIC_API_KEY || '',
+      openai: env.OPENAI_API_KEY || '',
       tavily: env.TAVILY_API_KEY || '',
       brave: env.BRAVE_API_KEY || '',
       exa: env.EXA_API_KEY || '',

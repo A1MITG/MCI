@@ -87,14 +87,14 @@ export function aiUseDisclosure(events, config) {
   const calls = events.filter((e) => e.type === 'model_call');
   const byStage = {};
   for (const c of calls) {
-    const s = (byStage[c.stage] ||= { calls: 0, input: 0, output: 0, prompt: c.prompt });
+    const s = (byStage[c.stage] ||= { calls: 0, input: 0, output: 0, prompt: c.prompt, model: c.usage?.model });
     s.calls += 1;
     s.input += c.usage?.input_tokens || 0;
     s.output += c.usage?.output_tokens || 0;
   }
   const lines = Object.entries(byStage).map(([stage, s]) => {
     const tier = config.harness.models.stageTier[stage];
-    return `${stage}: ${s.calls} call(s) to ${config.harness.models[tier]} (${tier} tier), prompt ${s.prompt}, ${s.input} input and ${s.output} output tokens`;
+    return `${stage}: ${s.calls} call(s) to ${s.model || config.harness.models[tier]} (${tier} tier), prompt ${s.prompt}, ${s.input} input and ${s.output} output tokens`;
   });
   return [
     'AI models drafted the research plan, proposed queries, extracted claim records, applied frameworks, audited the draft and wrote the prose.',

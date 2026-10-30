@@ -64,6 +64,10 @@
   "models": {
     "strong": "claude-opus-5-5",
     "fast": "claude-haiku-5-5",
+    "openai": {
+      "strong": "gpt-4.1",
+      "fast": "gpt-4.1-mini"
+    },
     "stageTier": {
       "scope": "strong",
       "collect": "fast",

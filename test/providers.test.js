@@ -5,6 +5,7 @@ import path from 'node:path';
 import { loadConfig, loadDotEnv } from '../src/config.js';
 import { createSearch, SEARCH_PROVIDERS } from '../src/providers/search/index.js';
 import { createLLM } from '../src/providers/llm/index.js';
+import { openaiLLM } from '../src/providers/llm/openai.js';
 import { robotsAllows, htmlToText } from '../src/providers/fetch/fetcher.js';
 
 test('one setting picks the search provider', () => {
@@ -48,3 +49,46 @@ function walk(dir) {
     return statSync(p).isDirectory() ? walk(p) : [p];
   });
 }
+
+// ---- OpenAI adapter (no network: fetch is stubbed) ---------------------------------
+
+
+const reply = (content, extra = {}) => async (url, init) => ({
+  ok: true,
+  status: 200,
+  json: async () => ({ model: JSON.parse(init.body).model, choices: [{ message: { content }, finish_reason: 'stop', ...extra }], usage: { prompt_tokens: 120, completion_tokens: 30, prompt_tokens_details: { cached_tokens: 100 } } }),
+});
+
+test('LLM_PROVIDER=openai selects the OpenAI adapter with its own key and models', () => {
+  const config = loadConfig({ LLM_PROVIDER: 'openai', OPENAI_MODEL_FAST: 'my-fast-model' });
+  assert.equal(createLLM(config).name, 'openai');
+  assert.equal(config.harness.models.openai.fast, 'my-fast-model');
+  assert.equal(config.harness.models.openai.strong, 'gpt-4.1');
+});
+
+test('OpenAI adapter: JSON mode request, tiered model, usage mapped', async () => {
+  let sent;
+  const fetchImpl = async (url, init) => { sent = { url, init }; return reply('{"ok": true}')(url, init); };
+  const llm = openaiLLM({ key: 'k', models: loadConfig({}).harness.models, fetchImpl });
+  const { data, usage } = await llm.json({ stage: 'validate', tier: 'fast', system: 'Reply in JSON.', user: 'u' });
+  const body = JSON.parse(sent.init.body);
+  assert.deepEqual(data, { ok: true });
+  assert.equal(body.model, 'gpt-4.1-mini');
+  assert.deepEqual(body.response_format, { type: 'json_object' });
+  assert.equal(body.messages[0].role, 'system');
+  assert.equal(sent.init.headers.authorization, 'Bearer k');
+  assert.deepEqual(usage, { input_tokens: 120, output_tokens: 30, cache_read_input_tokens: 100, model: 'gpt-4.1-mini' });
+});
+
+test('OpenAI adapter: failures become typed errors, never mock data', async () => {
+  const models = loadConfig({}).harness.models;
+  const status = (s) => async () => ({ ok: false, status: s, text: async () => 'nope' });
+  const code = async (fetchImpl, key = 'k') => openaiLLM({ key, models, fetchImpl }).json({ stage: 'scope', system: 's', user: 'u' }).catch((e) => e.code);
+  assert.equal(await code(reply('{}'), ''), 'config_error');
+  assert.equal(await code(status(429)), 'rate_limited');
+  assert.equal(await code(status(401)), 'config_error');
+  assert.equal(await code(status(500)), 'provider_error');
+  assert.equal(await code(reply('not json')), 'invalid_json');
+  assert.equal(await code(reply('{"a":', { finish_reason: 'length' })), 'invalid_json');
+  assert.equal(await code(async () => ({ ok: true, status: 200, json: async () => ({ choices: [{ message: { refusal: 'no' } }] }) })), 'refused');
+});

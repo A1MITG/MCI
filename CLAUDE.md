@@ -35,7 +35,7 @@ src/scoring/   confidence, recommendation, status rules, safe calculator
 src/gates/     the 14-check quality gate
 src/library/   prior-research lookup and recheck
 src/store/     file study store: versions, rollback, save/lock/unlock/delete, page snapshots
-src/providers/ search (tavily|brave|exa|fixture), llm (anthropic|fixture), fetch
+src/providers/ search (tavily|brave|exa|fixture), llm (anthropic|openai|fixture), fetch
 src/report/    interactive HTML report and SVG charts
 src/server/    HTTP API
 public/        minimal web page

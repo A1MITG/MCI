@@ -26,7 +26,7 @@ Approved by Amit on 2026-10-25: "Default for all", plus the added requirements b
 | 1f | Local hashed copy and check 14 | Counts as Partial | Yes |
 | 1g | Source budget per depth | A target; a shortfall is disclosed on page one | Yes |
 | 2a | Server | One Express server at the repo root; legacy code in `legacy/` | Yes |
-| 2b | Model | Claude only, tiered: fast model for collect and validate, strong model for scope, analyse, challenge, publish | Yes, `models.stageTier` |
+| 2b | Model | Claude only, tiered: fast model for collect and validate, strong model for scope, analyse, challenge, publish. **Amended 2026-10-30 (Amit):** OpenAI added as an option behind `LLM_PROVIDER=openai`; Claude stays the default | Yes, `models.stageTier`; OpenAI adapter in `src/providers/llm/openai.js` |
 | 2c | Agent framework | Agent SDK inside each stage, our own runner around it | Runner yes; Agent SDK arrives with live tools in phase 2 |
 | 2d | Search | Tavily behind an adapter | Yes; Brave and Exa adapters too |
 | 2e | Storage | Files first, Supabase at deploy | Files yes; Supabase in phase 5 |

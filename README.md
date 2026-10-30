@@ -22,6 +22,8 @@ SEARCH_PROVIDER=tavily   # or brave, exa, fixture
 
 Then set that provider's key in `.env`. Nothing else changes.
 
+The model provider works the same way: `LLM_PROVIDER=anthropic` (default) or `openai`, with `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`.
+
 ## How a study runs
 
 ```
