@@ -92,9 +92,9 @@
     "understand": "v1",
     "scope": "v1",
     "collect": "v1",
-    "validate": "v1",
+    "validate": "v2",
     "analyse": "v1",
-    "challenge": "v1",
+    "challenge": "v2",
     "publish": "v1"
   },
   "context": {

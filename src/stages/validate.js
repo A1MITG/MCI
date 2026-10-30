@@ -16,6 +16,7 @@ const SHAPE = `{"claims": [{"id": "C01", "kind": "claim|inference|estimate|value
 
 const MODEL_PENALTIES = new Set(['weak_estimation_method', 'missing_input', 'unresolved_contradiction']);
 const PREFIX = { claim: 'C', inference: 'I', estimate: 'E', value_at_stake: 'V' };
+const NON_FACT_STATUS = { inference: 'Inferred', estimate: 'Estimated', value_at_stake: 'Estimated' };
 
 export const validate = {
   name: 'validate',
@@ -64,7 +65,11 @@ export async function commitClaims(study, proposals, deps) {
     }
     const proposed = config.rubric.statuses.includes(p.status) ? p.status : 'Hypothesis';
     const needsQuote = ['Verified', 'Reported'].includes(proposed);
-    const st = needsQuote ? enforceStatus(proposed, { bestTier, passageMatched: matched }) : { status: proposed };
+    let st = needsQuote ? enforceStatus(proposed, { bestTier, passageMatched: matched }) : { status: proposed };
+    // Estimates, inferences and values at stake never carry a fact status (gate check 5): code relabels them here.
+    if (kind !== 'claim' && ['Verified', 'Reported'].includes(st.status)) {
+      st = { status: NON_FACT_STATUS[kind], reason: `a ${kind.replace(/_/g, ' ')} cannot carry the status ${st.status}` };
+    }
 
     const claim = {
       claim_id: id,

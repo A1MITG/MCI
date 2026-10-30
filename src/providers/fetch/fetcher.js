@@ -3,18 +3,19 @@ import { runError } from '../../core/errors.js';
 
 const UA = 'VantagePointResearch/0.1 (+research use; respects robots.txt)';
 
+const NAMED = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', ndash: '–', mdash: '—', hellip: '…', rsquo: '’', euro: '€', pound: '£', rupee: '₹', copy: '©', reg: '®', trade: '™' };
+const codePoint = (n, fallback) => (Number.isInteger(n) && n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : fallback);
+
 export function htmlToText(html) {
   return String(html)
     .replace(/<(script|style|noscript|svg)[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<br\s*\/?>|<\/(p|div|li|tr|h\d)>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/[ \t]+/g, ' ')
+    .replace(/&amp;/g, '&') // first, so double-encoded entities like &amp;#x27; decode fully below
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => codePoint(parseInt(h, 16), m))
+    .replace(/&#(\d+);/g, (m, d) => codePoint(Number(d), m))
+    .replace(/&([a-z]+);/gi, (m, name) => NAMED[name.toLowerCase()] ?? m)
+    .replace(/[ \t\u00a0]+/g, ' ')
     .replace(/\n\s*\n+/g, '\n')
     .trim();
 }

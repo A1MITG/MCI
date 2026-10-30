@@ -28,6 +28,10 @@ export const challenge = {
       user: `Draft:\n${json(draft)}\n\nClaim register:\n${json(claimDigest(study.claims))}\n\nSource register:\n${json(register)}\n\nSearch log:\n${json(study.search_log.map((q) => ({ id: q.query_id, text: q.query_text, purpose: q.purpose })))}\n\nReply with JSON shaped like:\n${SHAPE}`,
     });
     applyVerdicts(study, out, deps.config);
+    const known = new Set(study.claims.map((c) => c.claim_id));
+    if (!study.challenge.verdicts.some((v) => known.has(v.target))) {
+      await deps.emit('challenge_unparsed', { keys: Object.keys(out || {}), verdicts: asArray(verdictList(out)).length, sample: JSON.stringify(asArray(verdictList(out))[0] ?? null).slice(0, 300) });
+    }
     const queries = asArray(out.counter_evidence_queries).filter((q) => q?.text);
     if (queries.length) study.pending_queries = queries.map((q) => ({ ...q, purpose: 'counter_evidence' }));
     return { study, outcome: queries.length ? 'needs_counter_evidence' : 'pass', exit: exitCheck(study) };
@@ -36,9 +40,9 @@ export const challenge = {
 
 export function applyVerdicts(study, out, config) {
   const byId = new Map(study.claims.map((c) => [c.claim_id, c]));
-  const verdicts = asArray(out.verdicts).map((v) => ({
-    target: String(v.target || ''),
-    verdict: ['keep', 'downgrade', 'remove'].includes(v.verdict) ? v.verdict : 'keep',
+  const verdicts = asArray(verdictList(out)).map((v) => ({
+    target: targetId(v),
+    verdict: ['keep', 'downgrade', 'remove'].includes(String(v.verdict || '').toLowerCase()) ? String(v.verdict).toLowerCase() : 'keep',
     to_status: v.to_status || null,
     reason: String(v.reason || ''),
     alternatives: String(v.alternatives || ''),
@@ -71,6 +75,13 @@ export function applyVerdicts(study, out, config) {
   // Findings and recommendations that now rest on removed claims lose those references.
   const live = new Set(study.claims.filter((c) => !c.removed).map((c) => c.claim_id));
   study.findings = study.findings.map((f) => ({ ...f, claim_ids: f.claim_ids.filter((id) => live.has(id)) })).filter((f) => f.claim_ids.length);
+}
+
+// Models sometimes name the list or the target field differently, or write "C01: ...". Accept those shapes; IDs are still checked against the register.
+const verdictList = (out) => out?.verdicts ?? out?.audit ?? out?.claims ?? [];
+function targetId(v) {
+  const raw = String(v?.target ?? v?.claim_id ?? v?.id ?? v?.claim ?? '');
+  return raw.match(/^\s*([CIEVR]\d{2,})\b/)?.[1] ?? raw.trim();
 }
 
 /** v2 stage 05 exit: each critical conclusion has counter-evidence, assumptions and verification steps listed. */
