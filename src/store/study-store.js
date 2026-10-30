@@ -208,7 +208,7 @@ export class FileStudyStore {
     if (!/^[a-z0-9-]+\.(html|json|csv)$/.test(name)) throw new Error(`Bad output name ${name}`);
     const file = path.join(this.dir(id), name);
     await writeFile(`${file}.tmp`, content);
-    await rename(`${file}.tmp`, file);
+    await renameWithRetry(`${file}.tmp`, file);
     return file;
   }
 
@@ -223,7 +223,7 @@ export class FileStudyStore {
     const file = path.join(this.dir(id), 'study.json');
     const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
     await writeFile(tmp, JSON.stringify(study, null, 2));
-    await rename(tmp, file);
+    await renameWithRetry(tmp, file);
   }
 
   #serialise(id, fn) {
@@ -231,5 +231,20 @@ export class FileStudyStore {
     const next = prev.then(fn, fn);
     this.queues.set(id, next.catch(() => {}));
     return next;
+  }
+}
+
+/**
+ * On Windows, replacing a file that another request is reading at that moment fails with EPERM, EACCES or EBUSY.
+ * The lock clears within milliseconds, so retry briefly instead of failing the stage.
+ */
+export async function renameWithRetry(from, to, { attempts = 8, renameImpl = rename } = {}) {
+  for (let i = 1; ; i += 1) {
+    try {
+      return await renameImpl(from, to);
+    } catch (e) {
+      if (i >= attempts || !['EPERM', 'EACCES', 'EBUSY'].includes(e.code)) throw e;
+      await new Promise((r) => setTimeout(r, 10 * i));
+    }
   }
 }

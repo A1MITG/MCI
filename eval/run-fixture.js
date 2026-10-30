@@ -3,6 +3,7 @@
 import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { createHarness } from '../src/app.js';
 import { loadConfig } from '../src/config.js';
 import { FileStudyStore } from '../src/store/study-store.js';
@@ -55,7 +56,7 @@ export function reportProse(r) {
   return [r.answer, r.central_conclusion, r.major_uncertainty, ...r.limitations, ...r.sections.map((s) => s.body), ...Object.values(r.closing).flat()].join(' ');
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { study, dir } = await runFixtureStudy();
   const results = plantedErrorResults(study);
   console.log(`Study ${study.study_id}: ${study.state}`);

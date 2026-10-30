@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { FileStudyStore, StudyLockedError, StudyNotFoundError } from '../src/store/study-store.js';
+import { FileStudyStore, StudyLockedError, StudyNotFoundError, renameWithRetry } from '../src/store/study-store.js';
 
 const fresh = async (clock) => new FileStudyStore(await mkdtemp(path.join(tmpdir(), 'vp-store-')), clock ? { clock } : {});
 
@@ -68,4 +68,16 @@ test('snapshots are content-addressed and reused', async () => {
 test('study IDs cannot escape the data folder', async () => {
   const store = await fresh();
   await assert.rejects(store.get('../secrets'), StudyNotFoundError);
+});
+
+test('atomic writes retry when Windows briefly locks the target file', async () => {
+  let calls = 0;
+  const flaky = async () => {
+    calls += 1;
+    if (calls < 3) throw Object.assign(new Error('locked'), { code: 'EPERM' });
+  };
+  await renameWithRetry('a', 'b', { renameImpl: flaky });
+  assert.equal(calls, 3);
+  const missing = async () => { throw Object.assign(new Error('gone'), { code: 'ENOENT' }); };
+  await assert.rejects(renameWithRetry('a', 'b', { renameImpl: missing }), /gone/);
 });
