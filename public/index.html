@@ -28,6 +28,15 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;p
 .state.needs_input,.state.gate_blocked,.state.stage_failed{background:#FFF2CC;color:#6B4E00}.state.published,.state.confirmed{background:var(--navy);color:var(--white)}
 .ask{border:1px solid var(--amber);border-radius:8px;padding:10px;margin-top:6px;background:#FFFBEF}
 .muted{color:var(--muted)}.err{color:#8A5A00}
+.progress{margin-top:8px;max-width:520px}.progress .bar{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.progress .seg{height:6px;border-radius:3px;background:var(--rule);position:relative;overflow:hidden}
+.progress .seg.done{background:var(--navy)}.progress .seg.now{background:var(--light)}.progress .seg.wait{background:var(--amber)}
+.progress .seg.now::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--blue),transparent);animation:shimmer 1.4s linear infinite}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@media (prefers-reduced-motion:reduce){.progress .seg.now::after{animation:none;background:var(--blue);opacity:.5}}
+.progress .names{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:11px;color:var(--muted);margin-top:3px}.progress .names span.on{color:var(--navy);font-weight:600}
+.progress .line{font-size:13px;color:var(--navy);margin-top:4px}.progress .line.wait{color:#6B4E00}
+@media (max-width:700px){.progress .names{display:none}}
 @media (max-width:700px){.grid{grid-template-columns:1fr}main{padding:16px}td:nth-child(3),th:nth-child(3){display:none}}
 </style>
 </head>
@@ -54,6 +63,7 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;p
       </div>
     </details>
     <div class="row wide"><button class="primary" type="submit">Start study</button><span id="form-msg" class="muted"></span></div>
+    <div id="form-progress" class="wide"></div>
   </form>
 
   <h2>Studies</h2>
@@ -74,6 +84,29 @@ const LABEL = { needs_input: 'Needs your input', published_with_gaps: 'Published
 const STAGE = { understand: 'Reading your question', lookup: 'Checking past research', recheck: 'Re-checking past research', scope: 'Planning the research', collect: 'Finding sources', validate: 'Checking sources', analyse: 'Analysing', challenge: 'Challenging the findings', publish: 'Writing the report' };
 const PERSPECTIVE = { competitor: 'competitor view', own_company: 'own-company view', market: 'market view' };
 let startedId = null;
+// The 7 steps of the progress line. Each workflow stage maps to one step.
+const STEPS = [['Read', ['understand', 'lookup', 'recheck']], ['Plan', ['scope']], ['Find sources', ['collect']], ['Check', ['validate']], ['Analyse', ['analyse']], ['Challenge', ['challenge']], ['Report', ['publish']]];
+const stepOf = (stage) => STEPS.findIndex(([, stages]) => stages.includes(stage));
+const elapsed = (iso) => {
+  const sec = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
+  return sec < 60 ? `${sec}s` : `${Math.floor(sec / 60)}m ${String(sec % 60).padStart(2, '0')}s`;
+};
+
+/** Stepped progress line for a running, waiting or stopped study; empty once a study is finished. */
+function progress(s) {
+  const waiting = s.state === 'needs_input';
+  const stopped = !s.running && ['stage_failed', 'cancelled'].includes(s.state);
+  if (!s.running && !waiting && !stopped) return '';
+  const at = waiting ? 1 : Math.max(0, stepOf(s.stage));
+  const segs = STEPS.map((_, i) => `<span class="seg ${i < at ? 'done' : i === at ? (s.running ? 'now' : 'wait') : ''}"></span>`).join('');
+  const names = STEPS.map(([n], i) => `<span class="${i === at ? 'on' : ''}">${n}</span>`).join('');
+  let line;
+  if (waiting) line = 'Waiting for you: confirm the plan below';
+  else if (stopped) line = `Stopped at step ${at + 1} of 7 · ${STAGE[s.stage] || ''}`;
+  else if (s.stage === 'collect' && s.loops > 0) line = `Step ${at + 1} of 7 · Looping back to find more sources${s.stage_started_at ? ' · ' + elapsed(s.stage_started_at) : ''}`;
+  else line = `Step ${at + 1} of 7 · ${STAGE[s.stage] || 'Starting'}${s.stage === 'collect' && s.sources ? ` · ${s.sources} sources so far` : ''}${s.stage_started_at ? ' · ' + elapsed(s.stage_started_at) : ''}`;
+  return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="${at}" aria-label="${esc(line)}"><div class="bar">${segs}</div><div class="names">${names}</div><div class="line ${s.running ? '' : 'wait'}">${esc(line)}</div></div>`;
+}
 
 document.getElementById('new').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -87,7 +120,8 @@ document.getElementById('new').addEventListener('submit', async (e) => {
   try {
     const { study } = await api('POST', '/studies', { question: f.get('question'), depth: f.get('depth'), subject: opt('subject'), me: opt('me'), perspective: opt('perspective'), geography: opt('geography'), period: opt('period'), force_full_redo: f.get('force_full_redo') === 'on' });
     startedId = study.study_id;
-    msg.textContent = 'Started. ' + STAGE.understand + '…';
+    msg.textContent = '';
+    document.getElementById('form-progress').innerHTML = progress({ running: true, stage: 'understand' });
     form.reset();
     refresh();
   } catch (err) { msg.textContent = err.message; msg.className = 'err'; }
@@ -117,7 +151,7 @@ async function refresh() {
     }
     const done = ['published', 'published_with_gaps', 'gate_blocked', 'confirmed'].includes(s.state);
     const b = (a, label, dis) => `<button data-id="${s.study_id}" data-act="${a}" ${dis ? 'disabled' : ''}>${label}</button>`;
-    return `<tr><td><strong>${esc(s.title)}</strong><br><span class="muted">${esc(s.subject || 'company not read yet')} · v${s.version}${s.saved ? ' · saved' : ''}${s.locked ? ' · locked' : ''}</span>${s.state === 'stage_failed' && s.error ? `<div class="err">${esc(s.error)}</div>` : ''}${ask}</td>
+    return `<tr><td><strong>${esc(s.title)}</strong><br><span class="muted">${esc(s.subject || 'company not read yet')} · v${s.version}${s.saved ? ' · saved' : ''}${s.locked ? ' · locked' : ''}</span>${progress(s)}${s.state === 'stage_failed' && s.error ? `<div class="err">${esc(s.error)}</div>` : ''}${ask}</td>
       <td><span class="state ${s.state}">${esc(s.running ? STAGE[s.stage] || 'Running' : LABEL[s.state] || s.state)}</span></td>
       <td class="muted">${esc(s.updated_at.slice(0, 16).replace('T', ' '))}</td>
       <td class="row">${done ? `<a href="/api/studies/${s.study_id}/report.html" target="_blank">Report</a>` : ''}
@@ -127,8 +161,9 @@ async function refresh() {
   const mine = startedId && studies.find((s) => s.study_id === startedId);
   if (mine) {
     const msg = document.getElementById('form-msg');
-    msg.textContent = mine.running ? `Started. ${STAGE[mine.stage] || 'Running'}…` : mine.state === 'needs_input' ? 'Ready for you to confirm the plan below.' : LABEL[mine.state] || mine.state;
-    if (!mine.running) startedId = null;
+    msg.textContent = mine.running || mine.state === 'needs_input' ? '' : LABEL[mine.state] || mine.state;
+    document.getElementById('form-progress').innerHTML = progress(mine);
+    if (!mine.running && mine.state !== 'needs_input') startedId = null;
   }
   document.getElementById('list').innerHTML = rows.join('') || '<tr><td colspan="4" class="muted">No studies yet.</td></tr>';
   if (studies.some((s) => s.running)) setTimeout(refresh, 2000);

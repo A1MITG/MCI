@@ -26,7 +26,7 @@ export function createServer(harness) {
   const startInBackground = (id, opts) => {
     runner.run(id, opts).catch((e) => store.appendEvent(id, 'run_error', { message: e.message }).catch(() => {}));
   };
-  const summary = (s) => ({ study_id: s.study_id, title: s.inputs.title || s.inputs.question, subject: s.inputs.subject?.name || null, state: s.state, stage: s.stage, version: s.version, saved: s.saved, locked: s.locked, updated_at: s.updated_at, error: s.error?.message || null, running: runner.isRunning(s.study_id) });
+  const summary = (s) => ({ study_id: s.study_id, title: s.inputs.title || s.inputs.question, subject: s.inputs.subject?.name || null, state: s.state, stage: s.stage, version: s.version, saved: s.saved, locked: s.locked, updated_at: s.updated_at, error: s.error?.message || null, stage_started_at: s.stages?.[s.stage]?.started_at || null, sources: s.sources?.length || 0, loops: Object.values(s.loop_counts || {}).reduce((a, b) => a + b, 0), running: runner.isRunning(s.study_id) });
 
   app.get('/api/health', route(() => ({ ok: true, search: config.providers.search, llm: config.providers.llm })));
   app.get('/api/studies', route(async () => ({ ok: true, studies: (await store.list()).map(summary) })));

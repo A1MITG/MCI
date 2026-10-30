@@ -85,11 +85,13 @@ test('locked studies cannot run; cancel stops a running study', async () => {
   await h.store.unlock(s.study_id);
 
   let release;
+  let entered;
   const gate = new Promise((r) => { release = r; });
-  const slow = await harnessWith({ responses: { ...RESPONSES, scope: async () => { await gate; return RESPONSES.scope; } } });
+  const inScope = new Promise((r) => { entered = r; });
+  const slow = await harnessWith({ responses: { ...RESPONSES, scope: async () => { entered(); await gate; return RESPONSES.scope; } } });
   const t = await slow.createStudy(INPUTS);
   const running = slow.runner.run(t.study_id);
-  await new Promise((r) => setTimeout(r, 20));
+  await inScope; // cancel while the study is inside a stage, not after a fixed wait
   assert.ok(slow.runner.cancel(t.study_id));
   release();
   assert.equal((await running).state, 'cancelled');

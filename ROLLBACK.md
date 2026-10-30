@@ -6,6 +6,7 @@ Newest first. Before any change that replaces a page or the app's behaviour, add
 
 | # | Date | Rollback point | Description | How to go back |
 | --- | --- | --- | --- | --- |
+| 7 | 2026-10-30 | Commit `d9d1cf0` on `harness/openai-provider` | The one-question form before the stepped progress line was added (status was plain text, e.g. "Started.") | `git checkout d9d1cf0`, or revert the progress-line commit |
 | 6 | 2026-10-30 | `/classic` page (`public/classic.html`) | The previous full form (company, my company, perspective, depth, geography, period), kept as a working backup page after the form was cut to one question box | Open http://localhost:3000/classic. To make it the main page again, copy `public/classic.html` over `public/index.html` |
 | 5 | 2026-10-30 | Commit `c73ebba` on `harness/openai-provider` | The last version before the one-question form: OpenAI provider, the Windows fixes, and the stop-at-once message for an OpenAI account with no credit | `git checkout c73ebba`, or revert the form commit |
 | 4 | 2026-10-30 | Commit `17531fd` on `harness/openai-provider` | OpenAI provider plus the Windows fixes (file rename retry, eval entry point). 46 tests pass on Windows and Linux | `git checkout 17531fd` |
