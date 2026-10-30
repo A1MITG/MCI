@@ -4,6 +4,7 @@ import { callModel, asArray, nextId, json } from './common.js';
 import { recommendationRubricText } from './prompts.js';
 import { scoreRecommendation, } from '../scoring/recommendation.js';
 import { ScoringError } from '../scoring/confidence.js';
+import { resolveFramework, normaliseId } from './resolve.js';
 
 const SHAPE = `{"frameworks_used": [{"name": "", "rq_id": "RQ1", "conclusion": "", "claim_ids": ["C01"]}],
  "frameworks_excluded": [{"name": "", "reason": ""}],
@@ -39,15 +40,18 @@ export const analyse = {
 export function commitAnalysis(study, out, config) {
   const ids = new Set(study.claims.filter((c) => !c.removed).map((c) => c.claim_id));
   const byId = new Map(study.claims.map((c) => [c.claim_id, c]));
-  const keepIds = (list) => asArray(list).map(String).filter((id) => ids.has(id));
+  const keepIds = (list) => [...new Set(asArray(list).map(normaliseId).filter((id) => ids.has(id)))];
   const rqTools = new Map(study.scope.research_questions.map((q) => [q.id, new Set([...(config.frameworks.questions[q.question_type]?.tools || []), ...config.frameworks.alwaysAvailable])]));
   const issues = [];
   const used = [];
   const excluded = asArray(out.frameworks_excluded).map((f) => ({ name: String(f.name), reason: String(f.reason || '') }));
-  for (const f of asArray(out.frameworks_used)) {
-    const allowed = rqTools.get(f.rq_id);
+  for (const raw of asArray(out.frameworks_used)) {
+    const rqId = normaliseId(raw.rq_id);
+    const allowed = rqTools.get(rqId);
+    const name = allowed ? resolveFramework(raw.name, allowed) : null;
+    const f = { ...raw, rq_id: rqId, name: name || String(raw.name) };
     const claimIds = keepIds(f.claim_ids);
-    if (!allowed?.has(f.name)) {
+    if (!name) {
       excluded.push({ name: String(f.name), reason: `Not in the framework library for ${f.rq_id || 'an unknown question'}` });
       continue;
     }

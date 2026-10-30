@@ -8,7 +8,7 @@ export function openaiLLM({ key, models, fetchImpl = fetch, timeoutMs = 300_000 
   const names = models.openai;
   return {
     name: 'openai',
-    async json({ stage, tier = 'strong', system, user, signal, maxTokens = 16000 }) {
+    async json({ stage, tier = 'strong', system, user, signal, maxTokens = 32000 }) {
       if (!key) throw runError('config_error', 'LLM_PROVIDER=openai but OPENAI_API_KEY is not set in .env', { stage });
       const model = names[tier] || names.strong;
       const body = {

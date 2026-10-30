@@ -6,6 +6,7 @@ Newest first. Before any change that replaces a page or the app's behaviour, add
 
 | # | Date | Rollback point | Description | How to go back |
 | --- | --- | --- | --- | --- |
+| 10 | 2026-10-30 | Commit `ee94187` on `harness/openai-provider` | Before reading loose model output: question types, framework names and IDs had to match exactly, and scope failed at once on an unknown question type | `git checkout ee94187` |
 | 9 | 2026-10-30 | Commit `e672659` on `harness/openai-provider` | Before PDF reading: PDFs were listed as inaccessible, no `unpdf` dependency, no contact in the user agent | `git checkout e672659` then `npm ci` |
 | 8 | 2026-10-30 | Commit `8361790` on `harness/openai-provider` | Before the first-live-run fixes: estimate relabelling, HTML entity decoding, tolerant audit parsing, and prompts validate.v2 and challenge.v2 | `git checkout 8361790`, or set `prompts.validate` and `prompts.challenge` back to `v1` in `config/harness.config.json` |
 | 7 | 2026-10-30 | Commit `d9d1cf0` on `harness/openai-provider` | The one-question form before the stepped progress line was added (status was plain text, e.g. "Started.") | `git checkout d9d1cf0`, or revert the progress-line commit |

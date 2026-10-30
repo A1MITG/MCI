@@ -2,6 +2,7 @@
 // never the researcher's prompts or reasoning. Its verdicts are applied by code.
 import { callModel, asArray, json } from './common.js';
 import { claimDigest } from './analyse.js';
+import { normaliseId } from './resolve.js';
 
 const SHAPE = `{"verdicts": [{"target": "C01|R01|finding:1", "verdict": "keep|downgrade|remove", "to_status": "", "reason": "",
   "alternatives": "", "counter_evidence": "", "assumptions": "", "verification_steps": ""}],
@@ -79,10 +80,7 @@ export function applyVerdicts(study, out, config) {
 
 // Models sometimes name the list or the target field differently, or write "C01: ...". Accept those shapes; IDs are still checked against the register.
 const verdictList = (out) => out?.verdicts ?? out?.audit ?? out?.claims ?? [];
-function targetId(v) {
-  const raw = String(v?.target ?? v?.claim_id ?? v?.id ?? v?.claim ?? '');
-  return raw.match(/^\s*([CIEVR]\d{2,})\b/)?.[1] ?? raw.trim();
-}
+const targetId = (v) => normaliseId(v?.target ?? v?.claim_id ?? v?.id ?? v?.claim ?? '');
 
 /** v2 stage 05 exit: each critical conclusion has counter-evidence, assumptions and verification steps listed. */
 export function exitCheck(study) {

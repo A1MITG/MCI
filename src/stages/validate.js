@@ -6,6 +6,7 @@ import { passageFound, enforceStatus } from '../scoring/status.js';
 import { scoreConfidence, applyInferenceCeiling, ScoringError } from '../scoring/confidence.js';
 import { evaluate, CalcError } from '../scoring/calc.js';
 import { rqsWithoutStrongSource } from './collect.js';
+import { normaliseId } from './resolve.js';
 
 const SHAPE = `{"claims": [{"id": "C01", "kind": "claim|inference|estimate|value_at_stake", "rq_id": "RQ1", "dimension": "", "wording": "",
  "status": "", "source_ids": ["S01"], "supporting_passage": "", "calculation": {"formula": "a/b*100", "inputs": {"a": "C01", "b": "C02"}, "rounding": 1},
@@ -52,10 +53,10 @@ export async function commitClaims(study, proposals, deps) {
   for (const p of proposals) {
     const kind = PREFIX[p.kind] ? p.kind : 'claim';
     const taken = claims.map((c) => c.claim_id);
-    const asked = String(p.id || '');
+    const asked = normaliseId(p.id);
     const id = new RegExp(`^${PREFIX[kind]}\\d{2,}$`).test(asked) && !taken.includes(asked) ? asked : nextId(PREFIX[kind], taken);
-    const sourceIds = asArray(p.source_ids).filter((sid) => srcById.has(sid));
-    const unknown = asArray(p.source_ids).filter((sid) => !srcById.has(sid));
+    const sourceIds = [...new Set(asArray(p.source_ids).map(normaliseId).filter((sid) => srcById.has(sid)))];
+    const unknown = asArray(p.source_ids).map(normaliseId).filter((sid) => !srcById.has(sid));
     if (unknown.length) issues.push(`${id}: unknown source IDs dropped (${unknown.join(', ')})`);
     const cited = sourceIds.map((sid) => srcById.get(sid));
     const bestTier = cited.length ? Math.min(...cited.map((s) => s.tier)) : 6;
@@ -75,7 +76,7 @@ export async function commitClaims(study, proposals, deps) {
     const claim = {
       claim_id: id,
       kind,
-      rq_id: p.rq_id || null,
+      rq_id: p.rq_id ? normaliseId(p.rq_id) : null,
       dimension: String(p.dimension || ''),
       wording: String(p.wording || ''),
       status: st.status,
@@ -84,7 +85,7 @@ export async function commitClaims(study, proposals, deps) {
       source_ids: sourceIds,
       supporting_passage: p.supporting_passage ? String(p.supporting_passage) : null,
       passage_found_in_snapshot: needsQuote || p.supporting_passage ? matched : null,
-      calculation: p.calculation || null,
+      calculation: p.calculation ? { ...p.calculation, inputs: Object.fromEntries(Object.entries(p.calculation.inputs || {}).map(([k, v]) => [k, normaliseId(v)])) } : null,
       metric: p.metric && Number.isFinite(Number(p.metric.value)) ? { ...p.metric, value: Number(p.metric.value) } : null,
       data_period: p.data_period || null,
       materiality: clampInt(p.materiality, 1, 5, 3),
@@ -92,7 +93,7 @@ export async function commitClaims(study, proposals, deps) {
       contradictory_evidence: p.contradictory_evidence || null,
       verification_state: ['original', 'intermediary', 'unverified'].includes(p.verification_state) ? p.verification_state : 'unverified',
       next_verification_step: p.next_verification_step || null,
-      depends_on: asArray(p.depends_on).map(String),
+      depends_on: asArray(p.depends_on).map(normaliseId),
       best_tier: cited.length ? bestTier : null,
       _components: p.components,
       _penalties: asArray(p.penalties).filter((k) => MODEL_PENALTIES.has(k)),

@@ -3,6 +3,7 @@
 import { callModel, asArray, nextId, json } from './common.js';
 import { tierForUrl, domainOf } from '../scoring/status.js';
 import { RunError } from '../core/errors.js';
+import { normaliseId } from './resolve.js';
 
 const SHAPE = `{"queries": [{"rq_id": "RQ1", "text": "", "purpose": "evidence|counter_evidence"}]}`;
 
@@ -25,7 +26,7 @@ export const collect = {
           (study.search_log.length ? `Gaps to fill (no tier 1-3 source yet): ${json(gaps)}\n` : '') +
           `\nReply with JSON shaped like:\n${SHAPE}`,
       });
-      queries = asArray(out.queries);
+      queries = asArray(out.queries).map((q) => (typeof q === 'string' ? { rq_id: null, text: q, purpose: 'evidence' } : { ...q, rq_id: q?.rq_id ? normaliseId(q.rq_id) : null })).filter((q) => String(q.text || '').trim());
     }
     study.pending_queries = [];
 
