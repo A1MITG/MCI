@@ -1,14 +1,21 @@
 # Rollback points
 
-## Code
+## Roll back table
 
-| Point | What it is | How to return to it |
-| --- | --- | --- |
-| `rollback/v0-prototype` (branch, at `99b9afd`) | `main` exactly as it was before the harness rebuild | `git checkout rollback/v0-prototype`, or open a PR that resets `main` to it |
-| `legacy/` folder | The v0 prototype files (root Express server, `aiClient.js`, `public/`, `mci-web/`), moved with `git mv` so their history is kept | Copy the files back to the root. They are not served by the new app |
-| One PR per phase | Every phase merges as its own PR | Revert that phase's merge commit on GitHub |
+Newest first. Before any change that replaces a page or the app's behaviour, add a row here and keep the old version as a backup.
 
-A git tag `v0-prototype` was attempted, but the push was refused by this environment. The branch above marks the same commit.
+| # | Date | Rollback point | Description | How to go back |
+| --- | --- | --- | --- | --- |
+| 6 | 2026-10-30 | `/classic` page (`public/classic.html`) | The previous full form (company, my company, perspective, depth, geography, period), kept as a working backup page after the form was cut to one question box | Open http://localhost:3000/classic. To make it the main page again, copy `public/classic.html` over `public/index.html` |
+| 5 | 2026-10-30 | Commit `c73ebba` on `harness/openai-provider` | The last version before the one-question form: OpenAI provider, the Windows fixes, and the stop-at-once message for an OpenAI account with no credit | `git checkout c73ebba`, or revert the form commit |
+| 4 | 2026-10-30 | Commit `17531fd` on `harness/openai-provider` | OpenAI provider plus the Windows fixes (file rename retry, eval entry point). 46 tests pass on Windows and Linux | `git checkout 17531fd` |
+| 3 | 2026-10-30 | Commit `d942eb0` on `harness/openai-provider` | OpenAI provider added behind `LLM_PROVIDER`, before the Windows fixes | `git checkout d942eb0` |
+| 2 | 2026-10-30 | `main` at `355f32c` (PR #1) | Phase 1 harness as merged: Claude only, full form | `git checkout main` |
+| 1 | 2026-10-25 | Branch `rollback/v0-prototype` (`99b9afd`) and the `legacy/` folder | The original v0 prototype, before the harness rebuild. `legacy/` holds the same files, moved with `git mv` so their history is kept, and they are not served | `git checkout rollback/v0-prototype`, or open a PR that resets `main` to it |
+
+Every phase also merges as its own PR, so a whole phase can be undone by reverting its merge commit on GitHub. A git tag `v0-prototype` was attempted, but the push was refused by this environment; the branch in row 1 marks the same commit.
+
+Amit's PC keeps its own copy of this table, plus local page copies and the branch `rollback/pre-simple-form` (`17531fd`), in `C:\Projects\AI_Factory\vantage-point-backups\`.
 
 ## Studies
 

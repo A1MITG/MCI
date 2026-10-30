@@ -7,8 +7,9 @@ import { createLLM } from './providers/llm/index.js';
 import { createFetcher } from './providers/fetch/fetcher.js';
 import { Runner } from './core/runner.js';
 
-export const PERSPECTIVES = ['competitor', 'own_company', 'market'];
-export const DEPTHS = ['Student', 'Standard', 'Deep Dive', 'Board Grade'];
+import { PERSPECTIVES, DEPTHS } from './core/inputs.js';
+
+export { PERSPECTIVES, DEPTHS };
 
 export function createHarness({ config = loadConfig(), store, llm, search, fetcher, findNewer } = {}) {
   const deps = {
@@ -23,13 +24,16 @@ export function createHarness({ config = loadConfig(), store, llm, search, fetch
   return { ...deps, runner, createStudy: (inputs) => createStudy(deps.store, inputs) };
 }
 
-/** Validate inputs and create a study record. "Subject" is the company studied; "me" is the reader's company. */
+/**
+ * Validate inputs and create a study record. "Subject" is the company studied; "me" is the reader's company.
+ * Only the question is required: the understand stage works out any of subject, me, perspective, geography and period left blank.
+ */
 export async function createStudy(store, raw) {
   const errors = [];
   const inputs = {
     question: String(raw?.question || '').trim(),
     title: raw?.title ? String(raw.title).trim() : null,
-    perspective: String(raw?.perspective || 'competitor'),
+    perspective: raw?.perspective ? String(raw.perspective) : null,
     subject: { name: String(raw?.subject?.name || raw?.subject || '').trim() },
     me: raw?.me?.name || typeof raw?.me === 'string' ? { name: String(raw.me?.name || raw.me).trim() } : null,
     geography: String(raw?.geography || '').trim(),
@@ -38,8 +42,7 @@ export async function createStudy(store, raw) {
     force_full_redo: Boolean(raw?.force_full_redo),
   };
   if (!inputs.question) errors.push('question is required');
-  if (!inputs.subject.name) errors.push('subject.name is required');
-  if (!PERSPECTIVES.includes(inputs.perspective)) errors.push(`perspective must be one of ${PERSPECTIVES.join(', ')}`);
+  if (inputs.perspective && !PERSPECTIVES.includes(inputs.perspective)) errors.push(`perspective must be one of ${PERSPECTIVES.join(', ')}`);
   if (!DEPTHS.includes(inputs.depth)) errors.push(`depth must be one of ${DEPTHS.join(', ')}`);
   if (errors.length) {
     const e = new Error(errors.join('; '));

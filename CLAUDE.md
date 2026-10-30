@@ -20,6 +20,7 @@ When documents disagree, the higher item wins:
 - **The workflow is data.** Stage order and loops are in `src/core/graph.js`, and state changes go through `src/core/state.js`. Don't hard-code stage order anywhere else.
 - **Prompts are versioned.** To change a prompt, add `prompts/<stage>.v2.md` and bump `prompts.<stage>` in `config/harness.config.json`. Never edit a released prompt in place.
 - **Rubric changes** go in `config/scoring-rubric.json` with a version bump. The register tests must still pass.
+- **Keep a backup before replacing a page.** Keep the old page working (e.g. `public/classic.html` at `/classic`) and add a described row to the top of the table in `ROLLBACK.md`.
 - **Locked studies are read-only.** Nothing may write to one until it is unlocked.
 - Keys live in `.env` only. Never commit them or paste them in chat.
 
@@ -30,7 +31,7 @@ config/        rubric, source tiers, frameworks, harness limits (edit these, not
 prompts/       versioned stage prompts
 src/config.js  the only reader of process.env
 src/core/      graph, state machine, runner, retry, budgets, errors
-src/stages/    lookup+recheck, scope, collect, validate, analyse, challenge, publish
+src/stages/    understand, lookup+recheck, scope, collect, validate, analyse, challenge, publish
 src/scoring/   confidence, recommendation, status rules, safe calculator
 src/gates/     the 14-check quality gate
 src/library/   prior-research lookup and recheck

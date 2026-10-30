@@ -1,15 +1,16 @@
 // The study workflow as data. The runner walks this graph; nothing else hard-codes stage order.
 //
-//   lookup ─▶ scope ─▶ [user confirms] ─▶ collect ─▶ validate ─▶ analyse ─▶ challenge ─▶ publish
-//     │                                     ▲           │                     │
-//     └─▶ recheck (prior study found)       └── loop ───┘ (RQ lacks source)   └── loop (needs counter-evidence)
-//            ├─ no material change ─▶ confirmed (reuse prior, new version)
-//            └─ material change   ─▶ scope (full redo, seeded with prior sources)
+//   understand ─▶ lookup ─▶ scope ─▶ [user confirms] ─▶ collect ─▶ validate ─▶ analyse ─▶ challenge ─▶ publish
+//                 │                                     ▲           │                     │
+//                 └─▶ recheck (prior study found)       └── loop ───┘ (RQ lacks source)   └── loop (needs counter-evidence)
+//                        ├─ no material change ─▶ confirmed (reuse prior, new version)
+//                        └─ material change   ─▶ scope (full redo, seeded with prior sources)
 
 export const GRAPH = {
-  version: '1.0.0',
-  start: 'lookup',
+  version: '1.1.0',
+  start: 'understand',
   nodes: {
+    understand: { label: '00 Read the question', ui: false },
     lookup: { label: '00 Library check', ui: false },
     recheck: { label: '00 Recheck prior study', ui: false },
     scope: { label: '01 Scope', ui: true, pauseAfter: 'scope_confirmation' },
@@ -21,6 +22,7 @@ export const GRAPH = {
   },
   // Each edge: from -> to when `on` outcome is returned by the stage's exit check.
   edges: [
+    { from: 'understand', on: 'pass', to: 'lookup' },
     { from: 'lookup', on: 'no_prior', to: 'scope' },
     { from: 'lookup', on: 'prior_found', to: 'recheck' },
     { from: 'recheck', on: 'material_change', to: 'scope' },

@@ -1,6 +1,7 @@
 {
   "methodologyVersion": "master-prompt-v2.1",
   "stages": [
+    "understand",
     "lookup",
     "scope",
     "collect",
@@ -69,6 +70,7 @@
       "fast": "gpt-4.1-mini"
     },
     "stageTier": {
+      "understand": "fast",
       "scope": "strong",
       "collect": "fast",
       "validate": "fast",
@@ -77,6 +79,7 @@
       "publish": "strong"
     },
     "stageEffort": {
+      "understand": "low",
       "scope": "medium",
       "collect": "low",
       "validate": "medium",
@@ -86,6 +89,7 @@
     }
   },
   "prompts": {
+    "understand": "v1",
     "scope": "v1",
     "collect": "v1",
     "validate": "v1",

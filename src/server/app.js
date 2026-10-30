@@ -12,6 +12,8 @@ export function createServer(harness) {
   app.disable('x-powered-by');
   app.use(express.json({ limit: '200kb' }));
   app.use(express.static(path.join(config.root, 'public')));
+  // The previous full form, kept as a backup page.
+  app.get('/classic', (req, res) => res.sendFile(path.join(config.root, 'public', 'classic.html')));
 
   const route = (fn) => async (req, res) => {
     try {
@@ -24,7 +26,7 @@ export function createServer(harness) {
   const startInBackground = (id, opts) => {
     runner.run(id, opts).catch((e) => store.appendEvent(id, 'run_error', { message: e.message }).catch(() => {}));
   };
-  const summary = (s) => ({ study_id: s.study_id, title: s.inputs.title || s.inputs.question, subject: s.inputs.subject.name, state: s.state, stage: s.stage, version: s.version, saved: s.saved, locked: s.locked, updated_at: s.updated_at, running: runner.isRunning(s.study_id) });
+  const summary = (s) => ({ study_id: s.study_id, title: s.inputs.title || s.inputs.question, subject: s.inputs.subject?.name || null, state: s.state, stage: s.stage, version: s.version, saved: s.saved, locked: s.locked, updated_at: s.updated_at, error: s.error?.message || null, running: runner.isRunning(s.study_id) });
 
   app.get('/api/health', route(() => ({ ok: true, search: config.providers.search, llm: config.providers.llm })));
   app.get('/api/studies', route(async () => ({ ok: true, studies: (await store.list()).map(summary) })));

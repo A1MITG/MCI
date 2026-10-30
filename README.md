@@ -27,12 +27,14 @@ The model provider works the same way: `LLM_PROVIDER=anthropic` (default) or `op
 ## How a study runs
 
 ```
-library check ─▶ scope ─▶ (you confirm) ─▶ collect ─▶ validate ─▶ analyse ─▶ challenge ─▶ publish
-      │                                       ▲          │                     │
-      └─▶ re-check prior study                └─ loop ───┘                     └─ loop for counter-evidence
-             ├─ nothing material changed ─▶ reuse it, re-stamped
-             └─ material change ─▶ full redo, starting from the prior sources
+read the question ─▶ library check ─▶ scope ─▶ (you confirm) ─▶ collect ─▶ validate ─▶ analyse ─▶ challenge ─▶ publish
+                         │                                       ▲          │                     │
+                         └─▶ re-check prior study                └─ loop ───┘                     └─ loop for counter-evidence
+                                ├─ nothing material changed ─▶ reuse it, re-stamped
+                                └─ material change ─▶ full redo, starting from the prior sources
 ```
+
+Only the question is required. "Read the question" uses the fast model to fill in anything left blank (company, your company, perspective, geography, period); what you type under More options always wins. You see all of it on the scope confirmation card before any searching starts. The previous full form is kept at `/classic`.
 
 The quality gate ends each run:
 

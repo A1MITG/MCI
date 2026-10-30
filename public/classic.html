@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vantage Point (classic form)</title>
+<style>
+:root{--blue:#0090DA;--navy:#0061A0;--light:#CCE9F7;--amber:#F2A900;--white:#FFFFFF;--ink:#1F2A37;--muted:#5B6B7A;--rule:#D9E6EF;--wash:#F3F9FD}
+*{box-sizing:border-box}body{margin:0;background:var(--white);color:var(--ink);font:15px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+header{display:flex;align-items:center;gap:10px;padding:12px 24px;border-bottom:3px solid var(--blue)}
+.mark{width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--navy) 0 50%,var(--blue) 50% 75%,var(--light) 75%)}
+header small{display:block;color:var(--muted);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+main{max-width:1000px;margin:0 auto;padding:20px 24px 60px}
+h1{color:var(--navy);font-size:24px;margin:8px 0 16px}h2{color:var(--navy);font-size:18px;margin:28px 0 10px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--rule);border-radius:10px;padding:16px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}label.wide{grid-column:1/-1}
+input,select,textarea{font:inherit;color:var(--ink);padding:8px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--white)}
+textarea{min-height:60px}
+button{font:inherit;font-size:13px;border-radius:6px;padding:6px 12px;cursor:pointer;border:1px solid var(--blue);background:var(--white);color:var(--navy)}
+button.primary{background:var(--navy);border-color:var(--navy);color:var(--white)}button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--rule);vertical-align:top}th{background:var(--wash);color:var(--navy)}
+.state{display:inline-block;padding:0 8px;border-radius:999px;font-size:12px;background:var(--light);color:var(--navy)}
+.state.needs_input,.state.gate_blocked,.state.stage_failed{background:#FFF2CC;color:#6B4E00}.state.published,.state.confirmed{background:var(--navy);color:var(--white)}
+.ask{border:1px solid var(--amber);border-radius:8px;padding:10px;margin-top:6px;background:#FFFBEF}
+.muted{color:var(--muted)}.err{color:#8A5A00}
+@media (max-width:700px){form{grid-template-columns:1fr}main{padding:16px}td:nth-child(3),th:nth-child(3){display:none}}
+</style>
+</head>
+<body>
+<header><span class="mark" aria-hidden="true"></span><span><strong>Vantage Point</strong><small>The Continuum Lab</small></span></header>
+<main>
+  <h1>Competitive intelligence studies</h1>
+  <p class="muted">Backup of the previous full form. The simpler page is at <a href="/">/</a>.</p>
+  <form id="new">
+    <label class="wide">Question<textarea name="question" required placeholder="Is Tata Motors PV out-selling Mahindra in India?"></textarea></label>
+    <label>Company studied<input name="subject" required placeholder="Tata Motors"></label>
+    <label>My company (optional)<input name="me" placeholder="Mahindra"></label>
+    <label>Perspective<select name="perspective"><option value="competitor">Competitor</option><option value="own_company">Own company</option><option value="market">Market</option></select></label>
+    <label>Depth<select name="depth"><option>Student</option><option selected>Standard</option><option>Deep Dive</option><option>Board Grade</option></select></label>
+    <label>Geography<input name="geography" value="India"></label>
+    <label>Period<input name="period" placeholder="FY24"></label>
+    <label class="wide row" style="flex-direction:row"><input type="checkbox" name="force_full_redo"> Redo fully even if this was researched before</label>
+    <div class="row"><button class="primary" type="submit">Start study</button><span id="form-msg" class="muted"></span></div>
+  </form>
+
+  <h2>Studies</h2>
+  <p class="muted">Before a study starts, the library is checked for saved research on the same company, perspective and geography. Its material claims are re-checked, and the study is redone only if something material changed.</p>
+  <table><thead><tr><th>Study</th><th>State</th><th>Updated</th><th>Actions</th></tr></thead><tbody id="list"></tbody></table>
+</main>
+<script>
+const api = async (method, path, body) => {
+  const r = await fetch('/api' + path, { method, headers: { 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error?.message || r.statusText);
+  return j;
+};
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const LABEL = { needs_input: 'Needs your input', published_with_gaps: 'Published with gaps', gate_blocked: 'Blocked by quality gate', stage_failed: 'Stage failed', confirmed: 'Re-checked, unchanged' };
+
+document.getElementById('new').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const msg = document.getElementById('form-msg');
+  try {
+    await api('POST', '/studies', { question: f.get('question'), subject: { name: f.get('subject') }, me: f.get('me') ? { name: f.get('me') } : null, perspective: f.get('perspective'), depth: f.get('depth'), geography: f.get('geography'), period: f.get('period'), force_full_redo: f.get('force_full_redo') === 'on' });
+    msg.textContent = 'Started.'; e.target.reset(); refresh();
+  } catch (err) { msg.textContent = err.message; msg.className = 'err'; }
+});
+
+async function act(id, action, body) {
+  try {
+    if (action === 'delete' && !confirm('Delete this study and all its versions? This cannot be undone.')) return;
+    if (action === 'delete') await api('DELETE', `/studies/${id}`);
+    else await api('POST', `/studies/${id}/${action}`, body);
+    refresh();
+  } catch (err) { alert(err.message); }
+}
+
+async function refresh() {
+  const { studies } = await api('GET', '/studies');
+  const rows = await Promise.all(studies.map(async (s) => {
+    let ask = '';
+    if (s.state === 'needs_input' && !s.running) {
+      const { study } = await api('GET', `/studies/${s.study_id}`);
+      const p = study.pending_input;
+      if (p?.type === 'scope_confirmation') ask = `<div class="ask"><strong>${esc(p.question)}</strong><div class="row">${p.options.map((o) => `<button data-id="${s.study_id}" data-act="answer" data-choice="${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`;
+      if (p?.type === 'budget_raise') ask = `<div class="ask"><strong>${esc(p.message)}</strong><div class="row"><button data-id="${s.study_id}" data-act="answer" data-approve="1">Approve 50% more</button></div></div>`;
+    }
+    const done = ['published', 'published_with_gaps', 'gate_blocked', 'confirmed'].includes(s.state);
+    const b = (a, label, dis) => `<button data-id="${s.study_id}" data-act="${a}" ${dis ? 'disabled' : ''}>${label}</button>`;
+    return `<tr><td><strong>${esc(s.title)}</strong><br><span class="muted">${esc(s.subject)} · v${s.version}${s.saved ? ' · saved' : ''}${s.locked ? ' · locked' : ''}</span>${ask}</td>
+      <td><span class="state ${s.state}">${esc(s.running ? `Running: ${s.stage || ''}` : LABEL[s.state] || s.state)}</span></td>
+      <td class="muted">${esc(s.updated_at.slice(0, 16).replace('T', ' '))}</td>
+      <td class="row">${done ? `<a href="/api/studies/${s.study_id}/report.html" target="_blank">Report</a>` : ''}
+        ${s.running ? b('cancel', 'Cancel') : b('run', ['stage_failed', 'cancelled', 'gate_blocked'].includes(s.state) ? 'Resume' : 'Re-run', s.locked || s.state === 'needs_input')}
+        ${b('save', 'Save', s.saved || s.locked)}${s.locked ? b('unlock', 'Unlock') : b('lock', 'Lock', s.running)}${b('delete', 'Delete', s.locked || s.running)}</td></tr>`;
+  }));
+  document.getElementById('list').innerHTML = rows.join('') || '<tr><td colspan="4" class="muted">No studies yet.</td></tr>';
+  if (studies.some((s) => s.running)) setTimeout(refresh, 2000);
+}
+
+document.getElementById('list').addEventListener('click', (e) => {
+  const t = e.target.closest('button[data-act]');
+  if (!t) return;
+  const body = t.dataset.act === 'answer' ? (t.dataset.approve ? { approve: true } : { choice: t.dataset.choice }) : undefined;
+  act(t.dataset.id, t.dataset.act, body);
+});
+refresh();
+</script>
+</body>
+</html>
