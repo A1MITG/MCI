@@ -1,7 +1,10 @@
 // Page fetcher: robots.txt check, timeout, HTML-to-text. Every page it returns is untrusted data.
 import { runError } from '../../core/errors.js';
+import { pdfToText, MAX_PDF_BYTES } from './pdf.js';
 
 const UA = 'VantagePointResearch/0.1 (+research use; respects robots.txt)';
+// SEC EDGAR refuses requests that do not name a contact, so FETCH_CONTACT_EMAIL in .env is added to the user agent.
+export const userAgent = (contact) => (contact ? `${UA.slice(0, -1)}; ${contact})` : UA);
 
 const NAMED = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', ndash: '–', mdash: '—', hellip: '…', rsquo: '’', euro: '€', pound: '£', rupee: '₹', copy: '©', reg: '®', trade: '™' };
 const codePoint = (n, fallback) => (Number.isInteger(n) && n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : fallback);
@@ -34,11 +37,12 @@ export function robotsAllows(robotsTxt, pathname) {
   return !disallow.some((p) => pathname.startsWith(p));
 }
 
-export function createFetcher({ timeoutMs = 20000 } = {}) {
+export function createFetcher({ timeoutMs = 60000, contact = '' } = {}) {
+  const ua = userAgent(contact);
   const robotsCache = new Map();
   async function get(url, signal) {
     const s = AbortSignal.any([AbortSignal.timeout(timeoutMs), ...(signal ? [signal] : [])]);
-    return fetch(url, { headers: { 'user-agent': UA }, redirect: 'follow', signal: s });
+    return fetch(url, { headers: { 'user-agent': ua }, redirect: 'follow', signal: s });
   }
   return {
     async fetch(url, { signal } = {}) {
@@ -55,11 +59,16 @@ export function createFetcher({ timeoutMs = 20000 } = {}) {
       } catch (e) {
         throw runError(e.name === 'TimeoutError' ? 'timeout' : 'provider_error', `Fetch failed for ${url}: ${e.message}`);
       }
+      if (res.status === 403 && /(^|\.)sec\.gov$/.test(u.hostname) && !contact) throw runError('fetch_blocked', `SEC EDGAR needs a contact: set FETCH_CONTACT_EMAIL in .env (${url})`);
       if (res.status === 401 || res.status === 402 || res.status === 403) throw runError('fetch_blocked', `Access denied (${res.status}) for ${url}; not bypassed`);
       if (res.status === 429) throw runError('rate_limited', `Rate limited by ${u.host}`);
       if (!res.ok) throw runError('fetch_blocked', `HTTP ${res.status} for ${url}`);
       const type = res.headers.get('content-type') || '';
-      if (type.includes('pdf')) throw runError('fetch_blocked', `PDF extraction is not built yet (phase 3): ${url}`);
+      if (type.includes('pdf') || (/\.pdf$/i.test(u.pathname) && /octet-stream|^$/.test(type))) {
+        if (Number(res.headers.get('content-length')) > MAX_PDF_BYTES) throw runError('fetch_blocked', `PDF larger than ${MAX_PDF_BYTES / 1024 / 1024} MB: ${url}`);
+        const { text, pages } = await pdfToText(await res.arrayBuffer(), { url });
+        return { url: res.url || url, status: res.status, contentType: 'application/pdf', pages, text, fetchedAt: new Date().toISOString() };
+      }
       const body = await res.text();
       return { url: res.url || url, status: res.status, contentType: type, text: type.includes('html') ? htmlToText(body) : body, fetchedAt: new Date().toISOString() };
     },

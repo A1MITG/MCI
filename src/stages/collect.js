@@ -60,6 +60,8 @@ export const collect = {
           snapshot_path: snap.path,
           origin_source_id: null,
           language: null,
+          format: page.contentType?.includes('pdf') ? 'pdf' : 'web',
+          pages: page.pages ?? null,
           access_limitations: null,
           found_by: queryId,
         };

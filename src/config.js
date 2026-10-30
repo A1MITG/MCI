@@ -34,6 +34,7 @@ export function loadConfig(env = process.env) {
     },
     dataDir: path.resolve(ROOT, env.DATA_DIR || 'data/studies'),
     port: Number(env.PORT || 3000),
+    fetchContact: (env.FETCH_CONTACT_EMAIL || '').trim(),
   };
 }
 

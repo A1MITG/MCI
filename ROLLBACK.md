@@ -6,6 +6,7 @@ Newest first. Before any change that replaces a page or the app's behaviour, add
 
 | # | Date | Rollback point | Description | How to go back |
 | --- | --- | --- | --- | --- |
+| 9 | 2026-10-30 | Commit `e672659` on `harness/openai-provider` | Before PDF reading: PDFs were listed as inaccessible, no `unpdf` dependency, no contact in the user agent | `git checkout e672659` then `npm ci` |
 | 8 | 2026-10-30 | Commit `8361790` on `harness/openai-provider` | Before the first-live-run fixes: estimate relabelling, HTML entity decoding, tolerant audit parsing, and prompts validate.v2 and challenge.v2 | `git checkout 8361790`, or set `prompts.validate` and `prompts.challenge` back to `v1` in `config/harness.config.json` |
 | 7 | 2026-10-30 | Commit `d9d1cf0` on `harness/openai-provider` | The one-question form before the stepped progress line was added (status was plain text, e.g. "Started.") | `git checkout d9d1cf0`, or revert the progress-line commit |
 | 6 | 2026-10-30 | `/classic` page (`public/classic.html`) | The previous full form (company, my company, perspective, depth, geography, period), kept as a working backup page after the form was cut to one question box | Open http://localhost:3000/classic. To make it the main page again, copy `public/classic.html` over `public/index.html` |

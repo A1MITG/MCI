@@ -17,7 +17,7 @@ export function createHarness({ config = loadConfig(), store, llm, search, fetch
     store: store || new FileStudyStore(config.dataDir),
     llm: llm || createLLM(config),
     search: search || createSearch(config),
-    fetcher: fetcher || createFetcher(),
+    fetcher: fetcher || createFetcher({ contact: config.fetchContact }),
     findNewer,
   };
   const runner = new Runner(deps);

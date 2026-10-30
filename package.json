@@ -4,16 +4,21 @@
   "description": "Vantage Point competitive intelligence research harness (The Continuum Lab)",
   "private": true,
   "type": "module",
-  "bin": { "vp": "bin/vp.js" },
+  "bin": {
+    "vp": "bin/vp.js"
+  },
   "scripts": {
     "start": "node src/index.js",
     "test": "node --test test/*.test.js",
     "eval": "node eval/run-fixture.js",
     "vp": "node bin/vp.js"
   },
-  "engines": { "node": ">=20.10" },
+  "engines": {
+    "node": ">=20.10"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "unpdf": "1.8.1"
   }
 }

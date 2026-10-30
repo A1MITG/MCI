@@ -41,7 +41,7 @@ Approved by Amit on 2026-10-25: "Default for all", plus the added requirements b
 | 5c | Report | Executive first page, claim-linked charts, competitor matrix, PDF export | Yes (PDF via the browser's print) |
 | 6a | Safety in v1 | Prompt-injection defence, tool hooks, cost tracking, lock and cancel per study | Injection wrapping, budgets, token and search counts, lock, cancel: yes. Tool hooks arrive with live tools in phase 2 |
 | 6b | Demo case | India, Tata vs Mahindra | Synthetic offline fixture in `eval/`; live run in phase 2 |
-| 6c | Indian sources | BSE/NSE filings and annual reports | Tier table yes; PDF extraction in phase 3 |
+| 6c | Indian sources | BSE/NSE filings and annual reports | Tier table yes. **2026-10-30 (Amit):** PDF text extraction pulled forward from phase 3: text PDFs up to 25 MB / 400 pages, page-marked, long documents excerpted by study terms; scanned PDFs refused (no OCR) |
 | 6d | Access | Push access requested; keys in `.env`, never in chat | Yes |
 | 6e | Reviews | One PR per phase, reviewed by Amit | Yes |
 
@@ -49,6 +49,6 @@ Approved by Amit on 2026-10-25: "Default for all", plus the added requirements b
 
 1. **This PR.** Harness core, scoring, gate, store, library, providers, report, API, tests. No live calls, no keys needed.
 2. Live Claude and Tavily on the Tata vs Mahindra demo; Agent SDK inside stages; tool hooks.
-3. PDF and annual-report extraction (BSE/NSE), SEC XBRL structured values, public archiving.
+3. ~~PDF and annual-report extraction (BSE/NSE)~~ (done early, 2026-10-30), SEC XBRL structured values, OCR for scanned PDFs, public archiving.
 4. Port the Vantage Point stepper UI onto the API.
 5. Supabase storage and Vercel deploy.

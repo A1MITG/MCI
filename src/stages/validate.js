@@ -25,7 +25,8 @@ export const validate = {
     const max = config.harness.context;
     const sources = study.sources.slice(0, max.maxSourcesPerValidate);
     const blocks = [];
-    for (const s of sources) blocks.push(untrustedSource(s, (await store.getSnapshot(study.study_id, s.sha256)) || '', max.maxCharsPerSource));
+    const terms = [study.inputs.subject?.name, study.inputs.me?.name, ...(study.scope.competitors || []).map((c) => c.name), ...study.scope.research_questions.map((q) => q.text)];
+    for (const s of sources) blocks.push(untrustedSource(s, (await store.getSnapshot(study.study_id, s.sha256)) || '', max.maxCharsPerSource, terms));
 
     const out = await callModel(study, deps, 'validate', {
       vars: { RUBRIC: rubricText(config.rubric) },
