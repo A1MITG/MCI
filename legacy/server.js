@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs-extra');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const aiClient = require('./aiClient');
 
 const app = express();

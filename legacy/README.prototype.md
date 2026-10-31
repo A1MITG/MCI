@@ -27,17 +27,24 @@ npm start
 
 Switching to real AI providers
 
-- The `aiClient.js` file is the integration point. It currently returns mocked results when `MOCK=true` or when no `OPENAI_API_KEY`/`GROK_API_KEY` is present.
-- To implement real calls, add code into `aiClient.generateAnalysis` to call the OpenAI or Grok APIs. Keep the same output shape to avoid breaking the frontend.
+- `aiClient.js` uses the OpenAI Chat Completions API when `OPENAI_API_KEY` is set and `MOCK` is not `true`.
+- The server loads environment variables from the project-root `.env` file at startup.
 
 Environment variables
 
 - `MOCK=true` forces mock mode even if API keys are present.
-- `OPENAI_API_KEY` and/or `GROK_API_KEY` can be used later for real integrations.
+- `OPENAI_API_KEY` enables live OpenAI analysis. Create a local `.env` file in this project folder:
+
+```dotenv
+OPENAI_API_KEY=your-openai-api-key
+MOCK=false
+```
+
+- Never commit `.env` or share API keys. The `.env` file is ignored by Git.
+- If no key is configured, the app uses mock results.
 
 Next steps (recommended)
 
-- Wire up a real OpenAI / Grok integration and map the responses into the structured shape used by `aiClient`.
+- Add more provider integrations and map their responses into the structured shape used by `aiClient`.
 - Expand the frontend with the full pages in the sitemap (Platform tour, Products, Solutions by Role & Industry, Resources, Company pages, Pricing, etc.).
 - Add authentication, storage in a DB (Postgres/Firestore), and background workers for long-running analysis jobs.
-

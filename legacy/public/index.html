@@ -1,97 +1,415 @@
-npm cache clean --force<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MCI Platform - Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#08111f" />
+  <meta name="description" content="Market and competitive intelligence workspace" />
+  <title>Market Intelligence | MCI</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 24px; }
-    header { display:flex; align-items:center; gap:20px }
-    input[type=text] { width:400px; padding:8px }
-    button { padding:8px 12px; margin-left:6px }
-    .tile { border:1px solid #ddd; padding:12px; margin:8px 0 }
-    pre { background:#f7f7f7; padding:12px; overflow:auto }
+    :root {
+      color-scheme: dark;
+      --bg: #08111f;
+      --panel: #101c2d;
+      --line: rgba(174, 196, 224, .12);
+      --text: #eff5ff;
+      --muted: #8fa2bb;
+      --accent: #62e6c5;
+      --blue: #83aaff;
+      --amber: #ffc875;
+      --red: #ff8b91;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 78% -12%, rgba(52, 112, 155, .24), transparent 42rem),
+        radial-gradient(ellipse at 0 48%, rgba(28, 101, 95, .10), transparent 38rem),
+        var(--bg);
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { height: 76px; border-bottom: 1px solid var(--line); }
+    .topbar-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
+    .brand-mark {
+      width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px;
+      color: #061711; background: var(--accent); font-size: 17px; font-weight: 850;
+      box-shadow: 0 0 28px rgba(98, 230, 197, .2);
+    }
+    .brand-name { font-size: 15px; font-weight: 750; letter-spacing: -.02em; }
+    .brand-sub { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+    .top-meta { display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 12px; }
+    .status { display: inline-flex; align-items: center; gap: 8px; }
+    .status::before { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); content: ""; box-shadow: 0 0 12px rgba(98, 230, 197, .7); }
+    main { padding: 44px 0 64px; }
+    .eyebrow { margin: 0 0 12px; color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 46px); line-height: 1.08; letter-spacing: -.045em; }
+    .intro { max-width: 640px; margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+    .search-panel {
+      margin-top: 30px; padding: 20px; border: 1px solid rgba(128, 168, 207, .2); border-radius: 18px;
+      background: linear-gradient(140deg, rgba(21, 38, 58, .97), rgba(13, 26, 42, .96));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .2);
+    }
+    .search-label { display: block; margin-bottom: 10px; color: #cbd8e9; font-size: 12px; font-weight: 650; }
+    .search-row { display: grid; grid-template-columns: minmax(0, 1fr) 175px auto; gap: 10px; }
+    .input-wrap { position: relative; }
+    .search-icon { position: absolute; top: 50%; left: 15px; color: var(--muted); font-size: 17px; transform: translateY(-50%); pointer-events: none; }
+    input, select {
+      width: 100%; height: 48px; border: 1px solid var(--line); border-radius: 10px;
+      color: var(--text); background: rgba(5, 13, 23, .55);
+    }
+    input { padding: 0 14px 0 42px; }
+    input::placeholder { color: #72859e; }
+    select { padding: 0 34px 0 13px; }
+    .primary, .secondary {
+      min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid transparent; border-radius: 10px; padding: 0 16px; font-size: 13px; font-weight: 700;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+    }
+    .primary { min-width: 136px; color: #062018; background: var(--accent); }
+    .primary:hover:not(:disabled) { background: #83f0d6; transform: translateY(-1px); }
+    .secondary { color: #d8e4f3; border-color: var(--line); background: rgba(255, 255, 255, .035); }
+    .secondary:hover:not(:disabled) { border-color: rgba(131, 170, 255, .45); background: rgba(131, 170, 255, .08); }
+    button:disabled { cursor: wait; opacity: .65; }
+    .quick-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+    .quick-label { margin-right: 2px; color: var(--muted); font-size: 11px; }
+    .quick-chip {
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; color: #b8c9dc;
+      background: transparent; font-size: 11px; transition: border-color .15s, color .15s;
+    }
+    .quick-chip:hover { border-color: rgba(98, 230, 197, .5); color: var(--accent); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 35px 0 14px; }
+    .section-title { margin: 0; font-size: 16px; letter-spacing: -.02em; }
+    .section-note { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    #results { min-height: 190px; }
+    .empty-state, .loading-state, .error-state {
+      min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border: 1px dashed rgba(143, 162, 187, .25); border-radius: 15px; padding: 26px; text-align: center;
+      background: rgba(15, 28, 45, .42);
+    }
+    .empty-icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 14px; color: var(--accent); background: rgba(98, 230, 197, .07); font-size: 19px; }
+    .empty-state strong, .loading-state strong { font-size: 14px; }
+    .empty-state p, .loading-state p, .error-state p { max-width: 410px; margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .loading-state { border-style: solid; }
+    .spinner { width: 22px; height: 22px; margin-bottom: 12px; border: 2px solid rgba(98, 230, 197, .2); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-state { align-items: flex-start; border-style: solid; border-color: rgba(255, 139, 145, .25); text-align: left; }
+    .error-state strong { color: var(--red); font-size: 14px; }
+    .report-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .report-title { margin: 0; font-size: 21px; letter-spacing: -.035em; }
+    .report-meta { margin: 6px 0 0; color: var(--muted); font-size: 11px; }
+    .tag { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(98, 230, 197, .22); border-radius: 999px; padding: 6px 9px; color: var(--accent); background: rgba(98, 230, 197, .06); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .report-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; }
+    .card { min-width: 0; border: 1px solid var(--line); border-radius: 13px; padding: 16px; background: rgba(16, 28, 45, .82); }
+    .summary-card { grid-column: span 12; }
+    .metric-card { grid-column: span 3; }
+    .competitors-card, .company-card { grid-column: span 6; }
+    .alerts-card, .scenarios-card { grid-column: span 6; }
+    .card-label { margin: 0 0 10px; color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+    .summary-text { margin: 0; color: #d7e2f1; font-size: 13px; line-height: 1.7; }
+    .metric-value { overflow-wrap: anywhere; color: var(--text); font-size: clamp(17px, 2vw, 22px); font-weight: 700; letter-spacing: -.035em; }
+    .metric-caption { margin-top: 5px; color: var(--muted); font-size: 10px; }
+    .list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .list li { position: relative; padding-left: 14px; color: #c7d5e6; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+    .list li::before { position: absolute; top: 7px; left: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); content: ""; }
+    .list.alert-list li::before { background: var(--amber); }
+    .list.scenario-list li::before { background: var(--blue); }
+    .card-copy { margin: 0; color: #c7d5e6; font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+    .subsection { margin-top: 15px; }
+    .subsection:first-of-type { margin-top: 0; }
+    .subsection-title { margin: 0 0 7px; color: #aebed2; font-size: 10px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .sample-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .sample-card { transition: border-color .15s; }
+    .sample-card:hover { border-color: rgba(131, 170, 255, .35); }
+    .sample-company { margin: 0 0 8px; font-size: 15px; }
+    .sample-summary { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .sample-footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; padding-top: 11px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    footer { padding: 20px 0 28px; border-top: 1px solid var(--line); color: #71849d; font-size: 10px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 14px; }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 32px, 580px); }
+      main { padding-top: 32px; }
+      .search-row { grid-template-columns: 1fr 1fr; }
+      .input-wrap { grid-column: span 2; }
+      .search-row select { min-width: 0; }
+      .search-row .primary { width: 100%; }
+      .metric-card { grid-column: span 6; }
+      .competitors-card, .company-card, .alerts-card, .scenarios-card { grid-column: span 12; }
+      .sample-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .topbar { height: 66px; }
+      .top-meta { gap: 0; }
+      .top-meta .workspace-label { display: none; }
+      .shell { width: calc(100% - 28px); }
+      .search-panel { padding: 14px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .actions { width: 100%; }
+      .actions button { flex: 1; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Premium MCI Platform — Demo</h1>
-      <p>Enter any company to generate intelligence (mock mode if no API keys).</p>
+  <div class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="/" aria-label="MCI workspace home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span class="brand-name">MCI<span class="brand-sub">Intelligence workspace</span></span>
+      </a>
+      <div class="top-meta">
+        <span class="workspace-label">Market &amp; Competitive Intelligence</span>
+        <span class="status">Workspace ready</span>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <section>
-    <input id="companyInput" type="text" placeholder="Enter company name (e.g., Allianz)" />
-    <select id="regionSelect">
-      <option value="global">Global</option>
-      <option value="europe">Europe</option>
-      <option value="north-america">North America</option>
-      <option value="apac">APAC</option>
-    </select>
-    <button id="analyzeBtn">Analyze</button>
-    <button id="sampleBtn">Run 5-Company Insurance Sample</button>
-    <button id="viewSamplesBtn">View Stored Samples</button>
-  </section>
+  <main class="shell">
+    <p class="eyebrow">Research workspace</p>
+    <h1>See the market<br />from every angle.</h1>
+    <p class="intro">Build a focused company brief with competitor discovery, market sizing, company context, and signals to watch.</p>
 
-  <section id="results" style="margin-top:18px"></section>
+    <section class="search-panel" aria-labelledby="search-label">
+      <label class="search-label" id="search-label" for="companyInput">What would you like to understand?</label>
+      <form id="analysisForm" class="search-row">
+        <div class="input-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="companyInput" name="company" type="text" maxlength="120" autocomplete="off" placeholder="Search a company (e.g., Allianz)" />
+        </div>
+        <select id="regionSelect" aria-label="Analysis region">
+          <option value="global">Global</option>
+          <option value="europe">Europe</option>
+          <option value="north-america">North America</option>
+          <option value="apac">Asia Pacific</option>
+        </select>
+        <button class="primary" id="analyzeBtn" type="submit"><span aria-hidden="true">✦</span> Generate brief</button>
+      </form>
+      <div class="quick-row" aria-label="Example searches">
+        <span class="quick-label">Try:</span>
+        <button class="quick-chip" type="button" data-query="Allianz">Allianz</button>
+        <button class="quick-chip" type="button" data-query="NVIDIA">NVIDIA</button>
+        <button class="quick-chip" type="button" data-query="Electric vehicle market">EV market</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="results-heading">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title" id="results-heading">Intelligence brief</h2>
+          <p class="section-note" id="resultsNote">Your analysis will appear here.</p>
+        </div>
+        <div class="actions">
+          <button class="secondary" id="sampleBtn" type="button">Run insurance sample</button>
+          <button class="secondary" id="viewSamplesBtn" type="button">View saved samples</button>
+        </div>
+      </div>
+      <div id="results" aria-live="polite" aria-busy="false">
+        <div class="empty-state">
+          <div class="empty-icon" aria-hidden="true">⌕</div>
+          <strong>Start with a company or market</strong>
+          <p>Generate a brief above, or explore the five-company insurance sample to see the report format.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>MCI · Market &amp; Competitive Intelligence</span>
+      <span>Analysis may include estimates; validate important decisions with primary sources.</span>
+    </div>
+  </footer>
 
   <script>
+    const form = document.getElementById('analysisForm');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const sampleBtn = document.getElementById('sampleBtn');
     const viewBtn = document.getElementById('viewSamplesBtn');
     const companyInput = document.getElementById('companyInput');
     const regionSelect = document.getElementById('regionSelect');
     const results = document.getElementById('results');
+    const resultsNote = document.getElementById('resultsNote');
+    const actionButtons = [analyzeBtn, sampleBtn, viewBtn];
 
-    analyzeBtn.onclick = async () => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
       const company = companyInput.value.trim();
-      if (!company) { alert('Enter a company name'); return; }
-      results.innerHTML = '<div class="tile">Running analysis…</div>';
-      try {
-        const resp = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ company, region: regionSelect.value }) });
-        const j = await resp.json();
-        if (!j.ok) throw new Error(j.error || 'No result');
-        results.innerHTML = renderAnalysis(j.data);
-      } catch (e) {
-        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+      if (!company) {
+        companyInput.focus();
+        resultsNote.textContent = 'Enter a company or market to begin.';
+        return;
       }
-    };
+      await runAction('Generating intelligence brief…', async () => {
+        const response = await requestJson('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ company, region: regionSelect.value })
+        });
+        if (!response.ok || !response.data) throw new Error(response.error || 'The analysis did not return a report.');
+        results.innerHTML = renderAnalysis(response.data);
+        resultsNote.textContent = `Brief for ${response.data.company || company}`;
+      });
+    });
 
-    sampleBtn.onclick = async () => {
-      results.innerHTML = '<div class="tile">Running sample for 5 insurance companies…</div>';
+    sampleBtn.addEventListener('click', async () => {
+      await runAction('Running the five-company insurance sample…', async () => {
+        const response = await requestJson('/api/run-sample', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        if (!response.ok || !Array.isArray(response.samples)) throw new Error(response.error || 'The sample run did not return results.');
+        renderSamples(response.samples, 'Sample run complete · saved to the workspace');
+      });
+    });
+
+    viewBtn.addEventListener('click', async () => {
+      await runAction('Loading saved samples…', async () => {
+        const response = await requestJson('/api/samples');
+        if (!response.ok || !response.data || !Array.isArray(response.data.samples)) throw new Error(response.error || 'Saved samples could not be loaded.');
+        renderSamples(response.data.samples, `Saved samples${response.data.generatedAt ? ` · updated ${formatDate(response.data.generatedAt)}` : ''}`);
+      });
+    });
+
+    document.querySelectorAll('[data-query]').forEach((button) => {
+      button.addEventListener('click', () => {
+        companyInput.value = button.dataset.query;
+        form.requestSubmit();
+      });
+    });
+
+    async function requestJson(url, options) {
+      const response = await fetch(url, options);
+      let data;
       try {
-        const resp = await fetch('/api/run-sample', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-        const j = await resp.json();
-        if (!j.ok) throw new Error(j.error || 'No result');
-        results.innerHTML = '<div class="tile">Sample run completed and stored at <code>/data/insurance_samples.json</code></div>' + j.samples.map(s=>`<div class="tile"><h3>${s.company}</h3><pre>${escapeHtml(JSON.stringify(s.analysis, null, 2))}</pre></div>`).join('');
-      } catch (e) {
-        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+        data = await response.json();
+      } catch {
+        throw new Error(`The server returned an unreadable response (${response.status}).`);
       }
-    };
+      if (!response.ok) throw new Error((data && data.error) || `Request failed (${response.status}).`);
+      return data;
+    }
 
-    viewBtn.onclick = async () => {
-      results.innerHTML = '<div class="tile">Fetching stored samples…</div>';
+    async function runAction(message, action) {
+      setBusy(true);
+      results.setAttribute('aria-busy', 'true');
+      resultsNote.textContent = message;
+      results.innerHTML = `<div class="loading-state"><span class="spinner" aria-hidden="true"></span><strong>${escapeHtml(message)}</strong><p>This can take a few seconds while the workspace prepares your results.</p></div>`;
       try {
-        const resp = await fetch('/api/samples');
-        const j = await resp.json();
-        if (!j.ok) throw new Error(j.error || 'No result');
-        results.innerHTML = '<div class="tile">Stored samples:</div>' + j.data.samples.map(s=>`<div class="tile"><h3>${s.company}</h3><pre>${escapeHtml(JSON.stringify(s.analysis, null, 2))}</pre></div>`).join('');
-      } catch (e) {
-        results.innerHTML = `<div class="tile">Error: ${e.message}</div>`;
+        await action();
+      } catch (error) {
+        const messageText = error instanceof Error ? error.message : 'An unexpected error occurred.';
+        resultsNote.textContent = 'Unable to complete the request.';
+        results.innerHTML = `<div class="error-state" role="alert"><strong>We couldn’t load this intelligence.</strong><p>${escapeHtml(messageText)}</p></div>`;
+      } finally {
+        setBusy(false);
+        results.setAttribute('aria-busy', 'false');
       }
-    };
+    }
 
-    function renderAnalysis(a) {
-      return `<div class="tile"><h2>Executive Summary — ${a.company}</h2><p>${escapeHtml(a.executiveSummary)}</p>
-      <h3>Top Competitors</h3><pre>${escapeHtml(JSON.stringify(a.competitorDiscovery, null, 2))}</pre>
-      <h3>Market Sizing</h3><pre>${escapeHtml(JSON.stringify(a.marketSizing, null, 2))}</pre>
-      <h3>Company X-Ray</h3><pre>${escapeHtml(JSON.stringify(a.companyXRay, null, 2))}</pre>
-      <h3>Alerts</h3><pre>${escapeHtml(JSON.stringify(a.alerts, null, 2))}</pre>
+    function setBusy(busy) {
+      actionButtons.forEach((button) => { button.disabled = busy; });
+    }
+
+    function renderAnalysis(analysis) {
+      const company = escapeHtml(analysis.company || 'Company analysis');
+      const region = escapeHtml(formatRegion(analysis.region));
+      const sizing = analysis.marketSizing || {};
+      const discovery = analysis.competitorDiscovery || {};
+      const xray = analysis.companyXRay || {};
+      const competitors = Array.isArray(discovery.topCompetitors) ? discovery.topCompetitors : [];
+      const alerts = Array.isArray(analysis.alerts) ? analysis.alerts : [];
+      const scenarios = Array.isArray(analysis.scenarioSimulations) ? analysis.scenarioSimulations : [];
+      const timestamp = analysis.generatedAt ? `Generated ${formatDate(analysis.generatedAt)}` : 'Generated just now';
+
+      return `<div class="report-head">
+        <div><h3 class="report-title">${company}</h3><p class="report-meta">${region} · ${escapeHtml(timestamp)}</p></div>
+        <span class="tag"><span aria-hidden="true">✦</span> Company brief</span>
+      </div>
+      <div class="report-grid">
+        <article class="card summary-card"><p class="card-label">Executive summary</p><p class="summary-text">${escapeHtml(analysis.executiveSummary || 'No executive summary was provided.')}</p></article>
+        ${metricCard('Total addressable market', sizing.TAM, 'TAM')}
+        ${metricCard('Serviceable addressable market', sizing.SAM, 'SAM')}
+        ${metricCard('Serviceable obtainable market', sizing.SOM, 'SOM')}
+        ${metricCard('Growth rate', sizing.growthRate, 'Market growth')}
+        <article class="card competitors-card"><p class="card-label">Competitor discovery</p>${renderList(competitors, 'No competitors were included in this brief.')}${discovery.notes ? `<div class="subsection"><p class="subsection-title">Analyst notes</p><p class="card-copy">${escapeHtml(discovery.notes)}</p></div>` : ''}</article>
+        <article class="card company-card"><p class="card-label">Company X-ray</p>
+          ${xray.businessModel ? `<div class="subsection"><p class="subsection-title">Business model</p><p class="card-copy">${escapeHtml(xray.businessModel)}</p></div>` : ''}
+          ${xray.revenueEstimate ? `<div class="subsection"><p class="subsection-title">Revenue estimate</p><p class="card-copy">${escapeHtml(xray.revenueEstimate)}</p></div>` : ''}
+          ${renderSubsectionList('Leadership', xray.leadership)}
+          ${renderSubsectionList('Technology signals', xray.techStack)}
+          ${!xray.businessModel && !xray.revenueEstimate && !xray.leadership && !xray.techStack ? '<p class="card-copy">Company details were not included in this brief.</p>' : ''}
+        </article>
+        <article class="card alerts-card"><p class="card-label">Signals &amp; alerts</p>${renderList(alerts.map((alert) => [alert.type, alert.text].filter(Boolean).join(' · ')), 'No alerts were included in this brief.', 'alert-list')}</article>
+        <article class="card scenarios-card"><p class="card-label">Scenario simulations</p>${renderList(scenarios.map((item) => [item.scenario, item.impact].filter(Boolean).join(' — ')), 'No scenarios were included in this brief.', 'scenario-list')}</article>
       </div>`;
     }
 
-    function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function metricCard(label, value, caption) {
+      return `<article class="card metric-card"><p class="card-label">${escapeHtml(label)}</p><div class="metric-value">${escapeHtml(value || 'Not available')}</div><div class="metric-caption">${escapeHtml(caption)}</div></article>`;
+    }
+
+    function renderList(items, emptyMessage, className = '') {
+      if (!items.length) return `<p class="card-copy">${escapeHtml(emptyMessage)}</p>`;
+      return `<ul class="list ${className}">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+    }
+
+    function renderSubsectionList(title, items) {
+      if (!Array.isArray(items) || !items.length) return '';
+      return `<div class="subsection"><p class="subsection-title">${escapeHtml(title)}</p>${renderList(items, '')}</div>`;
+    }
+
+    function renderSamples(samples, note) {
+      resultsNote.textContent = note;
+      if (!samples.length) {
+        results.innerHTML = '<div class="empty-state"><strong>No saved samples yet</strong><p>Run the insurance sample to create your first set of company briefs.</p></div>';
+        return;
+      }
+      results.innerHTML = `<div class="sample-grid">${samples.map((sample) => {
+        const analysis = sample.analysis || {};
+        const summary = analysis.executiveSummary || 'No summary was included for this company.';
+        const competitors = analysis.competitorDiscovery && Array.isArray(analysis.competitorDiscovery.topCompetitors)
+          ? analysis.competitorDiscovery.topCompetitors.length
+          : 0;
+        return `<article class="card sample-card">
+          <p class="card-label">Company brief</p>
+          <h3 class="sample-company">${escapeHtml(sample.company || analysis.company || 'Company')}</h3>
+          <p class="sample-summary">${escapeHtml(summary)}</p>
+          <div class="sample-footer"><span>${competitors} competitors noted</span><span>${escapeHtml(formatDate(sample.timestamp || analysis.generatedAt))}</span></div>
+        </article>`;
+      }).join('')}</div>`;
+    }
+
+    function formatRegion(region) {
+      const regions = { global: 'Global', europe: 'Europe', 'north-america': 'North America', apac: 'Asia Pacific' };
+      return regions[region] || region || 'Region not specified';
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(date);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[character]);
+    }
   </script>
 </body>
 </html>
